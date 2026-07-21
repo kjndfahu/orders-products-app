@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import styles from "./layout.module.scss";
 import { TopMenu } from "@/components/TopMenu";
+import { NavigationMenu } from "@/components/NavigationMenu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +34,13 @@ export default function RootLayout({
         <div className={styles.shell}>
           <TopMenu />
 
-          <main className={styles.main}>
-            <div className={styles.content}>{children}</div>
-          </main>
+          <div className={styles.body}>
+            <NavigationMenu />
+
+            <main className={styles.main} id="main-content">
+              <div className={styles.content}>{children}</div>
+            </main>
+          </div>
         </div>
       </body>
     </html>
