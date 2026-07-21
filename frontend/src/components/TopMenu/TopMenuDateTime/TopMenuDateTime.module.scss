@@ -1,0 +1,47 @@
+@use "../../../styles/variables" as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.label {
+  color: rgba($color-foreground, 0.45);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date,
+.time {
+  color: $color-foreground;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.clock {
+  display: inline-flex;
+  align-items: center;
+  color: $color-primary;
+}
+
+.clockIcon {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .date,
+  .time {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,71 @@
+@use "../../styles/variables" as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: $color-surface;
+  box-shadow: 0 2px 8px rgba($color-shadow, 0.08);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  min-height: 64px;
+  padding: 12px 32px;
+}
+
+.brand {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brandIcon {
+  flex-shrink: 0;
+  color: $color-primary;
+}
+
+.brandText {
+  color: $color-primary;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.searchSlot {
+  flex: 0 1 420px;
+  min-width: 0;
+}
+
+.dateTimeSlot {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 20px;
+  }
+
+  .searchSlot {
+    order: 3;
+    flex: 1 1 100%;
+  }
+
+  .dateTimeSlot {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .brandText {
+    font-size: 16px;
+  }
+}
