@@ -1,7 +1,5 @@
+import { OrdersView } from "@/components/Orders";
+
 export default function OrdersPage() {
-  return (
-    <div className="flex">
-      
-    </div>
-  );
+  return <OrdersView />;
 }
