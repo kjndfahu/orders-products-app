@@ -12,15 +12,17 @@ type OrderProductRowProps = {
 
 export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => (
   <li className={styles.productRow}>
-    <span className={styles.statusDot} aria-hidden="true" />
+    <div className={styles.productInfoMain}>
+      <span className={styles.statusDot} aria-hidden="true" />
 
-    <div className={styles.productImage}>
-      <MonitorIcon />
-    </div>
+      <div className={styles.productImage}>
+        <MonitorIcon />
+      </div>
 
-    <div className={styles.productInfo}>
-      <p className={styles.productName}>{product.name}</p>
-      <p className={styles.productSerial}>{product.serialNumber}</p>
+      <div className={styles.productInfo}>
+        <p className={styles.productName}>{product.name}</p>
+        <p className={styles.productSerial}>{product.serialNumber}</p>
+      </div>
     </div>
 
     <span className={styles.productStatus}>

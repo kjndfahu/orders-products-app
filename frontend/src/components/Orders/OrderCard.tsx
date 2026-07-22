@@ -36,21 +36,23 @@ export const OrderCard = ({
       >
         <h3 className={styles.cardTitle}>{order.title}</h3>
 
-        <button
-          type="button"
-          className={styles.menuButton}
-          aria-label={`Открыть детали прихода: ${order.title}`}
-          aria-expanded={isActive}
-          onClick={() => onOpenDetails(order.id)}
-        >
-          <MenuLinesIcon />
-        </button>
+        <div className={styles.productMenu}>
+          <button
+            type="button"
+            className={styles.menuButton}
+            aria-label={`Открыть детали прихода: ${order.title}`}
+            aria-expanded={isActive}
+            onClick={() => onOpenDetails(order.id)}
+          >
+            <MenuLinesIcon />
+          </button>
 
-        <div className={styles.productCount}>
-          <span className={styles.productCountValue}>{order.productCount}</span>
-          <span className={styles.productCountLabel}>
-            {pluralizeProducts(order.productCount)}
-          </span>
+          <div className={styles.productCount}>
+            <span className={styles.productCountValue}>{order.productCount}</span>
+            <span className={styles.productCountLabel}>
+              {pluralizeProducts(order.productCount)}
+            </span>
+          </div>
         </div>
 
         <div className={styles.dateBlock}>
