@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
 import styles from "./Products.module.scss";
 
@@ -16,30 +17,34 @@ export const ProductsHeader = ({
   typeOptions,
   selectedType,
   onTypeChange,
-}: ProductsHeaderProps) => (
-  <div className={styles.header}>
-    <PageTitle
-      title="Продукты"
-      count={count}
-      className={styles.title}
-    />
+}: ProductsHeaderProps) => {
+  const { t } = useI18n();
 
-    <label className={styles.filter}>
-      <span className={styles.filterLabel}>Тип продукта:</span>
-      <span className={styles.filterSelectWrap}>
-        <select
-          className={styles.filterSelect}
-          value={selectedType}
-          onChange={(event) => onTypeChange(event.target.value)}
-        >
-          {typeOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
-      </span>
-    </label>
-  </div>
-);
+  return (
+    <div className={styles.header}>
+      <PageTitle
+        title={t('products.title')}
+        count={count}
+        className={styles.title}
+      />
+
+      <label className={styles.filter}>
+        <span className={styles.filterLabel}>Тип продукта:</span>
+        <span className={styles.filterSelectWrap}>
+          <select
+            className={styles.filterSelect}
+            value={selectedType}
+            onChange={(event) => onTypeChange(event.target.value)}
+          >
+            {typeOptions.map((option) => (
+              <option key={option} value={option}>
+                {option === 'all' ? t('products.all') : option === 'no_type' ? t('products.noType') : option}
+              </option>
+            ))}
+          </select>
+          <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
+        </span>
+      </label>
+    </div>
+  );
+};

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/contexts/I18nContext";
 import { PRODUCT_STATUS_LABELS } from "@/types/order";
 import {
   deleteProductGlobal,
@@ -25,6 +26,7 @@ export const ProductsView = () => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector(selectOrders);
   const status = useAppSelector(selectOrdersStatus);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (status === "idle") {
@@ -98,11 +100,11 @@ export const ProductsView = () => {
         </ul>
 
         {status === "loading" && (
-          <p className={styles.emptyState}>Загрузка продуктов...</p>
+          <p className={styles.emptyState}>{t('products.loading')}</p>
         )}
 
         {status !== "loading" && filteredProducts.length === 0 && (
-          <p className={styles.emptyState}>Продукты не найдены</p>
+          <p className={styles.emptyState}>{t('products.empty')}</p>
         )}
       </div>
     </div>

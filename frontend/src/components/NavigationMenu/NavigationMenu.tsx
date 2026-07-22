@@ -3,13 +3,21 @@
 import { Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useI18n } from "@/contexts/I18nContext";
 import { NAV_ITEMS } from "@/config";
 import styles from "./NavigationMenu.module.scss";
 
-const DISABLED_NAV_LABELS = new Set(["ГРУППЫ", "ПОЛЬЗОВАТЕЛИ", "НАСТРОЙКИ"]);
+const DISABLED_NAV_KEYS = new Set(["groups", "users", "settings"]);
+
+type NavKey = "orders" | "groups" | "products" | "users" | "settings";
 
 export const NavigationMenu = () => {
   const pathname = usePathname() ?? "";
+  const { t, locale } = useI18n();
+
+  const getLocalizedHref = (href: string) => {
+    return href.replace('/ru', `/${locale}`);
+  };
 
   return (
     <aside className={styles.navigationMenu} aria-label="Основная навигация">
@@ -31,10 +39,12 @@ export const NavigationMenu = () => {
 
       <nav className={styles.nav}>
         <ul className={styles.navList} role="list">
-          {NAV_ITEMS.map(({ href, label }) => {
-            const isDisabled = DISABLED_NAV_LABELS.has(label);
+          {NAV_ITEMS.map(({ href, key }) => {
+            const navKey = key as NavKey;
+            const isDisabled = DISABLED_NAV_KEYS.has(navKey);
+            const localizedHref = getLocalizedHref(href);
             const isActive =
-              pathname === href || pathname.startsWith(`${href}/`);
+              pathname === localizedHref || pathname.startsWith(`${localizedHref}/`);
 
             return (
               <li key={href} className={styles.navItem}>
@@ -43,15 +53,15 @@ export const NavigationMenu = () => {
                     className={`${styles.navLink} ${styles.navLinkDisabled}`}
                     aria-disabled="true"
                   >
-                    {label}
+                    {t(`nav.${navKey}`)}
                   </span>
                 ) : (
                   <Link
-                    href={href}
+                    href={localizedHref}
                     className={`${styles.navLink} ${isActive ? styles.navLinkActive : ""}`}
                     aria-current={isActive ? "page" : undefined}
                   >
-                    {label}
+                    {t(`nav.${navKey}`)}
                   </Link>
                 )}
               </li>

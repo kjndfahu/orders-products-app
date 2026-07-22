@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 import {
   deleteOrder as deleteOrderAction,
   deleteProduct,
@@ -23,6 +24,7 @@ export const OrdersView = () => {
   const orders = useAppSelector(selectOrders);
   const status = useAppSelector(selectOrdersStatus);
   const error = useAppSelector(selectOrdersError);
+  const { t } = useI18n();
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null);
 
@@ -97,11 +99,11 @@ export const OrdersView = () => {
       <OrdersHeader count={orders.length} />
 
       {status === "loading" && (
-        <p className={styles.emptyState}>Загрузка приходов...</p>
+        <p className={styles.emptyState}>{t('orders.loading')}</p>
       )}
 
       {status === "failed" && error && (
-        <p className={styles.emptyState}>Ошибка загрузки: {error}</p>
+        <p className={styles.emptyState}>{t('orders.error')}: {error}</p>
       )}
 
       <div className={styles.layout}>

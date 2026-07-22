@@ -47,6 +47,10 @@
   flex-shrink: 0;
 }
 
+.languageSlot {
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
   .inner {
     flex-wrap: wrap;

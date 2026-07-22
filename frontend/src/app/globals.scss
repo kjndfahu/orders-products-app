@@ -1,9 +1,9 @@
-@use "../styles/variables" as *;
-@import "tailwindcss";
+@use "../styles/_variables" as *;
+@use "tailwindcss";
 
 :root {
   --background: #{$color-background};
-  --foreground: #{$color-background};
+  --foreground: #{$color-foreground};
 }
 
 @theme inline {

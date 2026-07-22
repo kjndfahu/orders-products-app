@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "orders": "ORDERS",
+    "groups": "GROUPS",
+    "products": "PRODUCTS",
+    "users": "USERS",
+    "settings": "SETTINGS"
+  },
+  "orders": {
+    "title": "Orders",
+    "loading": "Loading orders...",
+    "error": "Loading error",
+    "empty": "No orders found",
+    "deleteConfirm": "Delete order",
+    "deleteSuccess": "Order successfully deleted",
+    "deleteError": "Error deleting order"
+  },
+  "products": {
+    "title": "Products",
+    "loading": "Loading products...",
+    "empty": "No products found",
+    "deleteSuccess": "Product successfully deleted",
+    "deleteError": "Error deleting product",
+    "noType": "No type",
+    "all": "All",
+    "condition": {
+      "new": "new",
+      "used": "Used"
+    },
+    "status": {
+      "free": "Free",
+      "reserved": "Reserved",
+      "sold": "Sold",
+      "repair": "In repair"
+    },
+    "delete": "Delete product"
+  },
+  "common": {
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter"
+  }
+}
