@@ -1,20 +1,22 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { MOCK_ORDERS } from "@/data/mockOrders";
-import type { Order } from "@/types/order";
+import {
+  deleteOrder as deleteOrderAction,
+  deleteProduct,
+  selectOrders,
+  useAppDispatch,
+  useAppSelector,
+} from "@/store";
 import { DeleteOrderModal } from "./DeleteOrderModal";
 import { OrderCard } from "./OrderCard";
 import { OrderDetailPanel } from "./OrderDetailPanel";
 import { OrdersHeader } from "./OrdersHeader";
-import {
-  confirmDeleteProduct,
-  handleDeleteConfirm as confirmOrderDelete,
-} from "./orderDeleteActions";
 import styles from "./Orders.module.scss";
 
 export const OrdersView = () => {
-  const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector(selectOrders);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null);
 
@@ -23,7 +25,7 @@ export const OrdersView = () => {
     [orders, selectedOrderId],
   );
 
-  const deleteOrder = useMemo(
+  const orderToDelete = useMemo(
     () => orders.find((order) => order.id === deleteOrderId) ?? null,
     [orders, deleteOrderId],
   );
@@ -45,14 +47,25 @@ export const OrdersView = () => {
   }, []);
 
   const handleDeleteConfirm = useCallback(() => {
-    confirmOrderDelete({ setOrders, setSelectedOrderId, setDeleteOrderId });
-  }, []);
+    setDeleteOrderId((currentDeleteOrderId) => {
+      if (!currentDeleteOrderId) {
+        return null;
+      }
+
+      dispatch(deleteOrderAction(currentDeleteOrderId));
+      setSelectedOrderId((current) =>
+        current === currentDeleteOrderId ? null : current,
+      );
+
+      return null;
+    });
+  }, [dispatch]);
 
   const handleDeleteProduct = useCallback(
     (orderId: string, productId: string) => {
-      setOrders((current) => confirmDeleteProduct(current, orderId, productId));
+      dispatch(deleteProduct({ orderId, productId }));
     },
-    [],
+    [dispatch],
   );
 
   return (
@@ -88,9 +101,9 @@ export const OrdersView = () => {
         )}
       </div>
 
-      {deleteOrder && (
+      {orderToDelete && (
         <DeleteOrderModal
-          order={deleteOrder}
+          order={orderToDelete}
           onCancel={handleDeleteCancel}
           onConfirm={handleDeleteConfirm}
         />

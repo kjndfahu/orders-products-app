@@ -1,4 +1,6 @@
-export type ProductStatus = "free" | "reserved" | "sold";
+export type ProductStatus = "free" | "reserved" | "sold" | "repair";
+
+export type ProductCondition = "new" | "used";
 
 export type OrderProduct = {
   id: string;
@@ -6,6 +8,14 @@ export type OrderProduct = {
   serialNumber: string;
   status: ProductStatus;
   imageUrl?: string;
+
+  warrantyFrom?: string;
+  warrantyTo?: string;
+  condition?: ProductCondition;
+  groupName?: string;
+  ownerName?: string;
+  priceUsd?: number;
+  priceUah?: number;
 };
 
 export type Order = {
@@ -23,4 +33,5 @@ export const PRODUCT_STATUS_LABELS: Record<ProductStatus, string> = {
   free: "Свободен",
   reserved: "Зарезервирован",
   sold: "Продан",
+  repair: "В ремонте",
 };

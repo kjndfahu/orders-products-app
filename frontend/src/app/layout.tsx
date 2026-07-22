@@ -4,6 +4,7 @@ import "./globals.scss";
 import styles from "./layout.module.scss";
 import { TopMenu } from "@/components/TopMenu";
 import { NavigationMenu } from "@/components/NavigationMenu";
+import { StoreProvider } from "@/providers/StoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,17 +32,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body>
-        <div className={styles.shell}>
-          <TopMenu />
+        <StoreProvider>
+          <div className={styles.shell}>
+            <TopMenu />
 
-          <div className={styles.body}>
-            <NavigationMenu />
+            <div className={styles.body}>
+              <NavigationMenu />
 
-            <main className={styles.main} id="main-content">
-              <div className={styles.content}>{children}</div>
-            </main>
+              <main className={styles.main} id="main-content">
+                <div className={styles.content}>{children}</div>
+              </main>
+            </div>
           </div>
-        </div>
+        </StoreProvider>
       </body>
     </html>
   );

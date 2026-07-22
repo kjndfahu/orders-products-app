@@ -1,0 +1,343 @@
+@use "../../styles/variables" as *;
+
+$text-primary: #3d4852;
+$text-secondary: #8a96a3;
+$text-muted: #b0b8c1;
+$surface-hover: #e8ecf1;
+$card-shadow: 0 2px 8px rgba($color-shadow, 0.06);
+$status-free: #b5b138;
+$status-free-dot: #6bbf59;
+$status-repair: #7c8794;
+$status-repair-dot: #3d4852;
+
+.products {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 64px - 88px);
+  background: #f5f7fa;
+  margin: -32px -24px -56px;
+  padding: 32px 24px 56px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.title {
+  margin: 0;
+  color: $text-primary;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.titleCount {
+  font-weight: 400;
+  color: $text-secondary;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterLabel {
+  color: $text-secondary;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.filterSelectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+  padding: 8px 36px 8px 14px;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+  background: $color-surface;
+  color: $text-primary;
+  font-size: 14px;
+  font-weight: 600;
+
+  svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-secondary;
+    pointer-events: none;
+  }
+}
+
+.filterSelect {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.tableScroll {
+  overflow-x: auto;
+  background: $color-surface;
+  border-radius: 4px;
+  box-shadow: $card-shadow;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 1400px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns:
+    12px 48px minmax(220px, 1.6fr) 90px 190px 70px 130px
+    minmax(160px, 1fr) minmax(160px, 1fr) minmax(200px, 1.4fr) 110px 40px;
+  align-items: center;
+  column-gap: 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba($color-border, 0.5);
+  transition: background 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $surface-hover;
+  }
+}
+
+.statusDot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $text-muted;
+}
+
+.dotFree {
+  background: $status-free-dot;
+}
+
+.dotRepair {
+  background: $status-repair-dot;
+}
+
+.dotDefault {
+  background: $text-muted;
+}
+
+.productImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: $text-secondary;
+}
+
+.productInfo {
+  min-width: 0;
+}
+
+.productName {
+  margin: 0 0 4px;
+  color: $text-primary;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productSerial {
+  margin: 0;
+  color: $text-muted;
+  font-size: 12px;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusFree {
+  color: $status-free;
+}
+
+.statusRepair {
+  color: $status-repair;
+}
+
+.statusDefault {
+  color: $text-secondary;
+}
+
+.warranty {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: $text-secondary;
+  font-size: 12px;
+
+  b {
+    color: $text-primary;
+    font-weight: 500;
+  }
+}
+
+.warrantySecondary {
+  color: $text-secondary;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.condition {
+  color: $text-primary;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceUsd {
+  color: $text-primary;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.priceUah {
+  color: $text-secondary;
+  font-size: 12px;
+}
+
+.groupName,
+.ownerName {
+  color: $text-primary;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.groupName {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ownerName {
+  font-weight: 600;
+}
+
+.orderLink {
+  border: none;
+  background: none;
+  padding: 0;
+  color: $text-primary;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.orderDateBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.orderDateSecondary {
+  color: $text-muted;
+  font-size: 11px;
+}
+
+.orderDatePrimary {
+  color: $text-primary;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: $text-muted;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    color: #c0392b;
+    background: rgba(#c0392b, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.emptyState {
+  padding: 40px 24px;
+  color: $text-secondary;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}

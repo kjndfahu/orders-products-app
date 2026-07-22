@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTitle } from "@/components/PageTitle/PageTitle";
 import { PlusIcon } from "./OrdersIcons";
 import styles from "./Orders.module.scss";
 
@@ -17,6 +18,6 @@ export const OrdersHeader = ({ count }: OrdersHeaderProps) => (
       <PlusIcon />
     </button>
 
-    <h1 className={styles.title}>Приходы / {count}</h1>
+    <PageTitle title="Приходы" count={count} className={styles.title} />
   </header>
 );

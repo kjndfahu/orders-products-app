@@ -20,6 +20,21 @@
   gap: 8px;
 }
 
+.sessions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba($color-primary, 0.12);
+  color: $color-primary;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .date,
 .time {
   color: $color-foreground;

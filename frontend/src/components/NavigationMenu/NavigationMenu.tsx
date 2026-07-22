@@ -7,7 +7,7 @@ import styles from "./NavigationMenu.module.scss";
 import { GearIcon } from "./NavigationMenuIcons";
 
 export const NavigationMenu = () => {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
 
   return (
     <aside className={styles.navigationMenu} aria-label="Основная навигация">

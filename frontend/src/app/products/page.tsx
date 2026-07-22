@@ -1,7 +1,6 @@
-export default function Products() {
-  return (
-    <div className="flex">
-      
-    </div>
-  );
+
+import { ProductsView } from "@/components/Products/ProductsView";
+
+export default function ProductsPage() {
+  return <ProductsView />;
 }
