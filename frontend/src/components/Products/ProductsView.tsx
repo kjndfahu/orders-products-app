@@ -1,21 +1,22 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PRODUCT_STATUS_LABELS } from "@/types/order";
 import {
   deleteProductGlobal,
+  fetchOrders,
   selectOrders,
+  selectOrdersStatus,
   useAppDispatch,
   useAppSelector,
 } from "@/store";
+import { deleteOrderItem } from "@/services/ordersApi";
 import { getAllProductsFromOrders } from "./getOrderProducts";
 import { ProductListRow } from "./ProductListRow";
 import { ProductsHeader } from "./ProductsHeader";
 import styles from "./Products.module.scss";
-
-const ALL = "Все";
-const NO_TYPE = "Без типа";
+import {ALL, NO_TYPE} from "../../config"
 
 const getProductType = (product: { groupName?: string }) => product.groupName ?? NO_TYPE;
 
@@ -23,9 +24,14 @@ export const ProductsView = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const orders = useAppSelector(selectOrders);
+  const status = useAppSelector(selectOrdersStatus);
 
-  // Products page reads from the same orders data as the Orders screen —
-  // every product shown here belongs to some order.
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchOrders());
+    }
+  }, [dispatch, status]);
+
   const products = useMemo(() => getAllProductsFromOrders(orders), [orders]);
 
   const [selectedType, setSelectedType] = useState(ALL);
@@ -45,15 +51,29 @@ export const ProductsView = () => {
 
   const handleOpenOrder = useCallback(
     (orderId: string) => {
-      // Adjust this route to wherever the Orders screen lives in your app.
       router.push(`/orders?order=${orderId}`);
     },
     [router],
   );
 
-  const handleDelete = useCallback((productId: string) => {
-    dispatch(deleteProductGlobal(productId));
-  }, [dispatch]);
+  const handleDelete = useCallback(
+    async (productId: string) => {
+      const product = products.find((p) => p.id === productId);
+
+      if (!product?.orderItemId) {
+        console.error("Product or orderItemId not found");
+        return;
+      }
+
+      try {
+        await deleteOrderItem(product.orderId, product.orderItemId);
+        dispatch(deleteProductGlobal(productId));
+      } catch (error) {
+        console.error("Failed to delete product", error);
+      }
+    },
+    [dispatch, products],
+  );
 
   return (
     <div className={styles.products}>
@@ -77,7 +97,11 @@ export const ProductsView = () => {
           ))}
         </ul>
 
-        {filteredProducts.length === 0 && (
+        {status === "loading" && (
+          <p className={styles.emptyState}>Загрузка продуктов...</p>
+        )}
+
+        {status !== "loading" && filteredProducts.length === 0 && (
           <p className={styles.emptyState}>Продукты не найдены</p>
         )}
       </div>

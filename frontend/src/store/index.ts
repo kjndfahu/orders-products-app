@@ -5,6 +5,9 @@ export {
   deleteOrder,
   deleteProduct,
   deleteProductGlobal,
+  fetchOrders,
   selectOrders,
+  selectOrdersError,
+  selectOrdersStatus,
 } from "./ordersSlice";
 

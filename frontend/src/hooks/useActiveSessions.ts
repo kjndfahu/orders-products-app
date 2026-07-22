@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 
 const SOCKET_PATH = "/api/socket";
 
-let socketSingleton: ReturnType<typeof io> | null = null;
+let socketSingleton: Socket | null = null;
 let hasInitialized = false;
 
 export const useActiveSessions = (): number | null => {
@@ -13,6 +13,11 @@ export const useActiveSessions = (): number | null => {
 
   useEffect(() => {
     let isMounted = true;
+    const handleActiveSessions = (count: number) => {
+      if (isMounted) {
+        setActiveSessions(count);
+      }
+    };
 
     const connect = async () => {
       try {
@@ -28,11 +33,14 @@ export const useActiveSessions = (): number | null => {
           });
         }
 
-        socketSingleton.on("activeSessions", (count: number) => {
-          if (isMounted) {
-            setActiveSessions(count);
-          }
+        socketSingleton.on("activeSessions", handleActiveSessions);
+        socketSingleton.on("connect", () => {
+          socketSingleton?.emit("requestActiveSessions");
         });
+
+        if (socketSingleton.connected) {
+          socketSingleton.emit("requestActiveSessions");
+        }
       } catch {
         // If socket server is unavailable, keep counter hidden.
       }
@@ -43,11 +51,11 @@ export const useActiveSessions = (): number | null => {
     return () => {
       isMounted = false;
       if (socketSingleton) {
-        socketSingleton.off("activeSessions");
+        socketSingleton.off("activeSessions", handleActiveSessions);
+        socketSingleton.off("connect");
       }
     };
   }, []);
 
   return activeSessions;
 };
-

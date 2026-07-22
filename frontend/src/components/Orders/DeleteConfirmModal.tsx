@@ -1,8 +1,8 @@
 "use client";
 
+import { Monitor, Trash2, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { OrderProduct } from "@/types/order";
-import { CloseIcon, MonitorIcon, TrashIcon } from "./OrdersIcons";
 import styles from "./Orders.module.scss";
 
 type DeleteConfirmModalProps = {
@@ -50,7 +50,7 @@ export const DeleteConfirmModal = ({
           aria-label="Закрыть"
           onClick={onCancel}
         >
-          <CloseIcon />
+          <X size={16} strokeWidth={1.75} />
         </button>
 
         <div className={styles.modalBody}>
@@ -65,7 +65,7 @@ export const DeleteConfirmModal = ({
                   <span className={styles.statusDot} aria-hidden="true" />
 
                   <div className={styles.productImage}>
-                    <MonitorIcon />
+                    <Monitor size={40} strokeWidth={1.5} />
                   </div>
 
                   <div className={styles.productInfo}>
@@ -95,7 +95,7 @@ export const DeleteConfirmModal = ({
             className={styles.modalDeleteButton}
             onClick={onConfirm}
           >
-            <TrashIcon />
+            <Trash2 size={16} strokeWidth={1.75} />
             УДАЛИТЬ
           </button>
         </div>

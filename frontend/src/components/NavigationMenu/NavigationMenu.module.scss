@@ -5,11 +5,15 @@ $nav-text-muted: #8a96a3;
 $nav-text-active: #3d4852;
 
 .navigationMenu {
+  position: sticky;
+  top: 64px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  align-self: flex-start;
   width: $navigation-menu-width;
-  min-height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
+  overflow-y: auto;
   background: $color-surface;
   box-shadow: 2px 0 8px rgba($color-shadow, 0.06);
 }
@@ -59,6 +63,7 @@ $nav-text-active: #3d4852;
   background: #f0f3f7;
   color: #5a6573;
   text-decoration: none;
+  cursor: default;
   transition:
     background 0.15s ease,
     color 0.15s ease;
@@ -72,6 +77,10 @@ $nav-text-active: #3d4852;
     outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
+}
+
+.navLinkDisabled {
+  cursor: default;
 }
 
 .nav {

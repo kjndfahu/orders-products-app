@@ -1,7 +1,7 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
-import { ChevronDownIcon } from "./ProductsIcons";
 import styles from "./Products.module.scss";
 
 type ProductsHeaderProps = {
@@ -22,7 +22,6 @@ export const ProductsHeader = ({
       title="Продукты"
       count={count}
       className={styles.title}
-      countClassName={styles.titleCount}
     />
 
     <label className={styles.filter}>
@@ -39,7 +38,7 @@ export const ProductsHeader = ({
             </option>
           ))}
         </select>
-        <ChevronDownIcon />
+        <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
       </span>
     </label>
   </div>

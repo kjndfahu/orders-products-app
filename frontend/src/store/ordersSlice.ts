@@ -1,14 +1,30 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { MOCK_ORDERS } from "@/data/mockOrders";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { Order } from "@/types/order";
+import { fetchOrders as fetchOrdersApi } from "@/services/ordersApi";
 
 export type OrdersState = {
   orders: Order[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
 };
 
 const initialState: OrdersState = {
-  orders: MOCK_ORDERS,
+  orders: [],
+  status: "idle",
+  error: null,
 };
+
+export const fetchOrders = createAsyncThunk(
+  "orders/fetchOrders",
+  async () => {
+    const orders = await fetchOrdersApi();
+    return orders;
+  },
+);
 
 export const ordersSlice = createSlice({
   name: "orders",
@@ -46,11 +62,30 @@ export const ordersSlice = createSlice({
       });
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrders.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message ?? "Failed to load orders";
+      });
+  },
 });
 
 export const { deleteOrder, deleteProduct, deleteProductGlobal } =
   ordersSlice.actions;
 
 export const selectOrders = (state: { orders: OrdersState }) => state.orders.orders;
+export const selectOrdersStatus = (state: { orders: OrdersState }) =>
+  state.orders.status;
+export const selectOrdersError = (state: { orders: OrdersState }) =>
+  state.orders.error;
 
 export default ordersSlice.reducer;

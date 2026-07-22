@@ -29,8 +29,8 @@ $status-repair-dot: #3d4852;
 .title {
   margin: 0;
   color: $text-primary;
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 600;
   line-height: 1.2;
 }
 
@@ -100,7 +100,8 @@ $status-repair-dot: #3d4852;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 1400px;
+  min-width: 1200px;
+  width: max-content;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -108,9 +109,8 @@ $status-repair-dot: #3d4852;
 
 .row {
   display: grid;
-  grid-template-columns:
-    12px 48px minmax(220px, 1.6fr) 90px 190px 70px 130px
-    minmax(160px, 1fr) minmax(160px, 1fr) minmax(200px, 1.4fr) 110px 40px;
+  grid-template-columns: 12px 48px minmax(220px, 1.6fr) 90px 190px 70px 130px 100px 90px minmax(200px, 1.4fr) 110px 40px;
+  width: 100%;
   align-items: center;
   column-gap: 20px;
   padding: 16px 24px;

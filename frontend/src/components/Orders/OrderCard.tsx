@@ -1,14 +1,10 @@
 "use client";
 
+import { ChevronRight, Menu, Trash2 } from "lucide-react";
 import type { Order } from "@/types/order";
 import { formatOrderDate } from "@/utils/formatOrderDate";
 import { formatUsd, formatUah } from "@/utils/formatCurrency";
 import { pluralizeProducts } from "@/utils/pluralizeProducts";
-import {
-  ChevronRightIcon,
-  MenuLinesIcon,
-  TrashIcon,
-} from "./OrdersIcons";
 import styles from "./Orders.module.scss";
 
 type OrderCardProps = {
@@ -44,7 +40,7 @@ export const OrderCard = ({
             aria-expanded={isActive}
             onClick={() => onOpenDetails(order.id)}
           >
-            <MenuLinesIcon />
+            <Menu size={16} strokeWidth={1.75}/>
           </button>
 
           <div className={styles.productCount}>
@@ -73,7 +69,7 @@ export const OrderCard = ({
           aria-label={`Удалить приход: ${order.title}`}
           onClick={() => onDelete(order.id)}
         >
-          <TrashIcon />
+          <Trash2 size={16} strokeWidth={1.75} />
         </button>
 
         {isCompact && (
@@ -81,7 +77,7 @@ export const OrderCard = ({
             className={`${styles.cardArrow} ${isActive ? "" : styles.cardArrowSpacer}`}
             aria-hidden="true"
           >
-            {isActive && <ChevronRightIcon />}
+            {isActive && <ChevronRight size={16} strokeWidth={1.75} />}
           </div>
         )}
       </article>

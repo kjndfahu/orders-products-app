@@ -1,8 +1,8 @@
 "use client";
 
+import { Monitor, Trash2 } from "lucide-react";
 import type { OrderProduct } from "@/types/order";
 import { PRODUCT_STATUS_LABELS } from "@/types/order";
-import { MonitorIcon, TrashIcon } from "./OrdersIcons";
 import styles from "./Orders.module.scss";
 
 type OrderProductRowProps = {
@@ -16,7 +16,7 @@ export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => 
       <span className={styles.statusDot} aria-hidden="true" />
 
       <div className={styles.productImage}>
-        <MonitorIcon />
+        <Monitor size={40} strokeWidth={1.5} />
       </div>
 
       <div className={styles.productInfo}>
@@ -35,7 +35,7 @@ export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => 
       aria-label={`Удалить ${product.name}`}
       onClick={() => onDelete?.(product.id)}
     >
-      <TrashIcon />
+      <Trash2 size={16} strokeWidth={1.75} />
     </button>
   </li>
 );

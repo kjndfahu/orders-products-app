@@ -1,7 +1,7 @@
 "use client";
 
+import { Plus } from "lucide-react";
 import { PageTitle } from "@/components/PageTitle/PageTitle";
-import { PlusIcon } from "./OrdersIcons";
 import styles from "./Orders.module.scss";
 
 type OrdersHeaderProps = {
@@ -15,7 +15,7 @@ export const OrdersHeader = ({ count }: OrdersHeaderProps) => (
       className={styles.addButton}
       aria-label="Добавить приход"
     >
-      <PlusIcon />
+      <Plus size={14} strokeWidth={2} />
     </button>
 
     <PageTitle title="Приходы" count={count} className={styles.title} />

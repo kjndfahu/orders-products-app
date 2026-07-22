@@ -33,6 +33,10 @@ export default function handler(_req: NextApiRequest, res: WithSocketServer) {
       server.activeSocketIds?.add(socket.id);
       io.emit("activeSessions", server.activeSocketIds?.size ?? 0);
 
+      socket.on("requestActiveSessions", () => {
+        socket.emit("activeSessions", server.activeSocketIds?.size ?? 0);
+      });
+
       socket.on("disconnect", () => {
         server.activeSocketIds?.delete(socket.id);
         io.emit("activeSessions", server.activeSocketIds?.size ?? 0);

@@ -1,7 +1,7 @@
 "use client";
 
+import { Clock3 } from "lucide-react";
 import { useActiveSessions, useCurrentDateTime } from "@/hooks";
-import { ClockIcon } from "../TopMenuIcons";
 import { formatHeaderDate, formatHeaderTime } from "../utils";
 import styles from "./TopMenuDateTime.module.scss";
 
@@ -29,7 +29,7 @@ export const TopMenuDateTime = () => {
         )}
 
         <span className={styles.clock} aria-hidden="true">
-          <ClockIcon className={styles.clockIcon} />
+          <Clock3 className={styles.clockIcon} size={16} strokeWidth={1.9} />
         </span>
         <time
           className={styles.time}

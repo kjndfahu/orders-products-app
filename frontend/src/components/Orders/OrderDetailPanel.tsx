@@ -1,9 +1,9 @@
 "use client";
 
+import { Plus, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Order } from "@/types/order";
 import { DeleteProductModal } from "./DeleteProductModal";
-import { CloseIcon, PlusIcon } from "./OrdersIcons";
 import { OrderProductRow } from "./OrderProductRow";
 import styles from "./Orders.module.scss";
 
@@ -62,7 +62,7 @@ export const OrderDetailPanel = ({
           aria-label="Закрыть панель"
           onClick={onClose}
         >
-          <CloseIcon />
+          <X size={16} strokeWidth={1.75} />
         </button>
 
         <aside
@@ -81,7 +81,7 @@ export const OrderDetailPanel = ({
 
             <button type="button" className={styles.addProductButton}>
               <span className={styles.addProductIcon}>
-                <PlusIcon />
+                <Plus size={14} strokeWidth={2} />
               </span>
               Добавить продукт
             </button>

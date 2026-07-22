@@ -1,7 +1,7 @@
+import { Shield } from "lucide-react";
 import Link from "next/link";
 import { TopMenuDateTime } from "./TopMenuDateTime";
 import { TopMenuSearch } from "./TopMenuSearch";
-import { ShieldLogoIcon } from "./TopMenuIcons";
 import styles from "./TopMenu.module.scss";
 
 export const TopMenu = () => {
@@ -9,7 +9,7 @@ export const TopMenu = () => {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand} aria-label="INVENTORY — на главную">
-          <ShieldLogoIcon className={styles.brandIcon} />
+          <Shield className={styles.brandIcon} size={22} strokeWidth={1.9} />
           <span className={styles.brandText}>INVENTORY</span>
         </Link>
 

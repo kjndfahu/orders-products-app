@@ -8,6 +8,7 @@ export type OrderProduct = {
   serialNumber: string;
   status: ProductStatus;
   imageUrl?: string;
+  orderItemId?: number;
 
   warrantyFrom?: string;
   warrantyTo?: string;

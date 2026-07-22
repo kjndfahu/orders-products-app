@@ -1,21 +1,12 @@
 "use client";
 
+import { Monitor, Trash2 } from "lucide-react";
+import { ProductListItem } from "@/config";
+import { STATUS_VARIANTS, CONDITION_LABEL } from "../../config";
 import { formatOrderDate } from "@/utils/formatOrderDate";
 import { formatUsd, formatUah } from "@/utils/formatCurrency";
-import { MonitorIcon, TrashIcon } from "./ProductsIcons";
 import { formatWarrantyRange } from "./formatWarrantyDate";
-import type { ProductListItem } from "./product.types";
 import styles from "./Products.module.scss";
-
-const STATUS_STYLE: Record<string, { dot: string; text: string }> = {
-  свободен: { dot: styles.dotFree, text: styles.statusFree },
-  "в ремонте": { dot: styles.dotRepair, text: styles.statusRepair },
-};
-
-const CONDITION_LABEL: Record<ProductListItem["condition"], string> = {
-  new: "новый",
-  used: "Б/У",
-};
 
 type ProductListRowProps = {
   product: ProductListItem;
@@ -30,17 +21,36 @@ export const ProductListRow = ({
   onOpenOrder,
   onDelete,
 }: ProductListRowProps) => {
-  const { from, to } = formatWarrantyRange(product.warrantyFrom, product.warrantyTo);
+  const { from, to } = formatWarrantyRange(
+    product.warrantyFrom,
+    product.warrantyTo,
+  );
+
   const orderDate = formatOrderDate(product.orderDate);
-  const statusStyle =
-    STATUS_STYLE[statusLabel.toLowerCase()] ?? { dot: styles.dotDefault, text: styles.statusDefault };
+
+  const status = STATUS_VARIANTS[
+    statusLabel.toLowerCase() as keyof typeof STATUS_VARIANTS
+  ];
+
+  const statusStyle = status
+    ? {
+        dot: styles[status.dot],
+        text: styles[status.text],
+      }
+    : {
+        dot: styles.dotDefault,
+        text: styles.statusDefault,
+      };
 
   return (
     <li className={styles.row}>
-      <span className={`${styles.statusDot} ${statusStyle.dot}`} aria-hidden="true" />
+      <span
+        className={`${styles.statusDot} ${statusStyle.dot}`}
+        aria-hidden="true"
+      />
 
       <div className={styles.productImage}>
-        <MonitorIcon />
+        <Monitor size={40} strokeWidth={1.5} />
       </div>
 
       <div className={styles.productInfo}>
@@ -48,7 +58,9 @@ export const ProductListRow = ({
         <p className={styles.productSerial}>{product.serialNumber}</p>
       </div>
 
-      <span className={`${styles.status} ${statusStyle.text}`}>{statusLabel}</span>
+      <span className={`${styles.status} ${statusStyle.text}`}>
+        {statusLabel}
+      </span>
 
       <div className={styles.warranty}>
         {from && (
@@ -57,6 +69,7 @@ export const ProductListRow = ({
             <span className={styles.warrantySecondary}>({from.iso})</span>
           </span>
         )}
+
         {to && (
           <span>
             по <b>{to.pretty}</b>{" "}
@@ -65,16 +78,26 @@ export const ProductListRow = ({
         )}
       </div>
 
-      <span className={styles.condition}>{CONDITION_LABEL[product.condition]}</span>
+      <span className={styles.condition}>
+        {CONDITION_LABEL[product.condition]}
+      </span>
 
       <div className={styles.priceBlock}>
-        <span className={styles.priceUsd}>{formatUsd(product.priceUsd)}</span>
-        <span className={styles.priceUah}>{formatUah(product.priceUah)}</span>
+        <span className={styles.priceUsd}>
+          {formatUsd(product.priceUsd)}
+        </span>
+        <span className={styles.priceUah}>
+          {formatUah(product.priceUah)}
+        </span>
       </div>
 
-      <span className={styles.groupName}>{product.groupName ?? "Без типа"}</span>
+      <span className={styles.groupName}>
+        {product.groupName ?? "Без типа"}
+      </span>
 
-      <span className={styles.ownerName}>{product.ownerName ?? "—"}</span>
+      <span className={styles.ownerName}>
+        {product.ownerName ?? "—"}
+      </span>
 
       <button
         type="button"
@@ -88,7 +111,10 @@ export const ProductListRow = ({
         <span className={styles.orderDateSecondary}>
           {product.orderSecondaryDateLabel ?? orderDate.secondary}
         </span>
-        <span className={styles.orderDatePrimary}>{orderDate.primary}</span>
+
+        <span className={styles.orderDatePrimary}>
+          {orderDate.primary}
+        </span>
       </div>
 
       <button
@@ -97,7 +123,7 @@ export const ProductListRow = ({
         aria-label={`Удалить продукт: ${product.name}`}
         onClick={() => onDelete(product.id)}
       >
-        <TrashIcon />
+        <Trash2 size={18} strokeWidth={1.75} />
       </button>
     </li>
   );

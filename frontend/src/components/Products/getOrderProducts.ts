@@ -1,5 +1,5 @@
 import type { Order } from "@/types/order";
-import type { ProductListItem } from "./product.types";
+import type { ProductListItem } from "@/config";
 
 /**
  * Flattens every product out of every order into one list, for the
@@ -29,6 +29,7 @@ export const getAllProductsFromOrders = (orders: Order[]): ProductListItem[] =>
         orderTitle: order.title,
         orderDate: order.date,
         orderSecondaryDateLabel: order.secondaryDateLabel,
+        orderItemId: product.orderItemId,
       };
     }),
   );
