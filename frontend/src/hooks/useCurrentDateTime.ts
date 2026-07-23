@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 const DEFAULT_TICK_MS = 1_000;
 
 export const useCurrentDateTime = (tickMs = DEFAULT_TICK_MS): Date => {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    setNow(new Date());
+
     const timer = window.setInterval(() => {
       setNow(new Date());
     }, tickMs);
@@ -15,5 +17,5 @@ export const useCurrentDateTime = (tickMs = DEFAULT_TICK_MS): Date => {
     return () => window.clearInterval(timer);
   }, [tickMs]);
 
-  return now;
+  return now ?? new Date(0);
 };

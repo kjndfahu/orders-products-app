@@ -18,6 +18,5 @@ export const pluralizeProducts = (count: number, locale: string): string => {
     return "Продуктов";
   }
 
-  // English
   return count === 1 ? "Product" : "Products";
 };

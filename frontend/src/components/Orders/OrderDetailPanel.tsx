@@ -1,11 +1,13 @@
 "use client";
 
 import { Plus, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useI18n } from "@/contexts/I18nContext";
 import type { Order } from "@/types/order";
-import { DeleteProductModal } from "./DeleteProductModal";
+import { DeleteProductModal } from "../Products/DeleteProductModal";
 import { OrderProductRow } from "./OrderProductRow";
+import { useOrderDetailPanel } from "@/utils/orderDetailPanelHandlers";
+import { lockScroll } from "@/utils/scrollLock";
 import styles from "./Orders.module.scss";
 
 type OrderDetailPanelProps = {
@@ -21,45 +23,37 @@ export const OrderDetailPanel = ({
 }: OrderDetailPanelProps) => {
   const { t } = useI18n();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
 
-  const deleteProduct = useMemo(
-    () => order.products.find((product) => product.id === deleteProductId) ?? null,
-    [order.products, deleteProductId],
-  );
+  const {
+    productToDelete,
+    confirmDeleteProduct,
+    handleDeleteCancel,
+    handleDeleteConfirm,
+    handleWrapperClick,
+  } = useOrderDetailPanel({
+    products: order.products,
+    onClose,
+    onDeleteProduct,
+  });
 
   useEffect(() => {
     closeButtonRef.current?.focus();
 
+    const unlockScroll = lockScroll();
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !deleteProductId) {
+      if (event.key === "Escape" && !productToDelete) {
         onClose();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [deleteProductId, onClose]);
-
-  const handleDeleteCancel = () => {
-    setDeleteProductId(null);
-  };
-
-  const handleDeleteConfirm = () => {
-    if (!deleteProductId) {
-      return;
-    }
-
-    onDeleteProduct(deleteProductId);
-    setDeleteProductId(null);
-  };
-
-  const handleWrapperClick = () => {
-    // Only close on mobile/tablet (when panel is modal overlay)
-    if (window.innerWidth <= 1024) {
-      onClose();
-    }
-  };
+    
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      unlockScroll();
+    };
+  }, [productToDelete, onClose]);
 
   return (
     <>
@@ -96,7 +90,7 @@ export const OrderDetailPanel = ({
               <span className={styles["orders__add-product-icon"]}>
                 <Plus size={14} strokeWidth={2} />
               </span>
-              {t('orders.addProduct')}
+              {t("orders.addProduct")}
             </button>
           </header>
 
@@ -105,16 +99,16 @@ export const OrderDetailPanel = ({
               <OrderProductRow
                 key={product.id}
                 product={product}
-                onDelete={setDeleteProductId}
+                onDelete={confirmDeleteProduct}
               />
             ))}
           </ul>
         </aside>
       </div>
 
-      {deleteProduct && (
+      {productToDelete && (
         <DeleteProductModal
-          product={deleteProduct}
+          product={productToDelete}
           onCancel={handleDeleteCancel}
           onConfirm={handleDeleteConfirm}
         />

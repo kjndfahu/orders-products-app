@@ -18,6 +18,20 @@
   gap: 8px;
 }
 
+.top-menu-date-time__sessions-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-menu-date-time__sessions-label {
+  color: rgba(var(--foreground), 0.55);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .top-menu-date-time__sessions {
   display: inline-flex;
   align-items: center;

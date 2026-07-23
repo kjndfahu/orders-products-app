@@ -2,14 +2,18 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Server as HttpServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 
-type WithSocketServer = NextApiResponse & {
+type NextApiResponseWithSocket = NextApiResponse & {
   socket: {
-    server: {
+    server: HttpServer & {
       io?: SocketIOServer;
-      activeSocketIds?: Set<string>;
     };
   };
 };
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __inventorySocketIo: SocketIOServer | undefined;
+}
 
 export const config = {
   api: {
@@ -17,33 +21,48 @@ export const config = {
   },
 };
 
-export default function handler(_req: NextApiRequest, res: WithSocketServer) {
-  const server = res.socket.server;
+const getSessionCount = (io: SocketIOServer): number =>
+  io.sockets.sockets.size;
 
-  if (!server.io) {
-    const io = new SocketIOServer(server as unknown as HttpServer, {
+const broadcastActiveSessions = (io: SocketIOServer) => {
+  setImmediate(() => {
+    const count = getSessionCount(io);
+    io.emit("activeSessions", count);
+  });
+};
+
+export default function handler(
+  _req: NextApiRequest,
+  res: NextApiResponseWithSocket,
+) {
+  const httpServer = res.socket.server;
+
+  if (!global.__inventorySocketIo) {
+    const io = new SocketIOServer(httpServer, {
       path: "/api/socket",
       addTrailingSlash: false,
-      transports: ["websocket"],
+      transports: ["polling", "websocket"],
+      pingTimeout: 20000,
+      pingInterval: 25000,
     });
 
-    server.io = io;
-    server.activeSocketIds = new Set<string>();
-
     io.on("connection", (socket) => {
-      server.activeSocketIds?.add(socket.id);
-      io.emit("activeSessions", server.activeSocketIds?.size ?? 0);
+      broadcastActiveSessions(io);
 
       socket.on("requestActiveSessions", () => {
-        socket.emit("activeSessions", server.activeSocketIds?.size ?? 0);
+        setImmediate(() => {
+          socket.emit("activeSessions", getSessionCount(io));
+        });
       });
 
       socket.on("disconnect", () => {
-        server.activeSocketIds?.delete(socket.id);
-        io.emit("activeSessions", server.activeSocketIds?.size ?? 0);
+        broadcastActiveSessions(io);
       });
     });
+
+    global.__inventorySocketIo = io;
   }
 
+  httpServer.io = global.__inventorySocketIo;
   res.status(200).end();
 }

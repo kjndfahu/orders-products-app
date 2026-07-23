@@ -4,16 +4,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/contexts/I18nContext";
 import {
-  deleteProductGlobal,
   fetchOrders,
   selectOrders,
   selectOrdersStatus,
   useAppDispatch,
   useAppSelector,
 } from "@/store";
-import { deleteOrderItem } from "@/services/ordersApi";
 import { getAllProductsFromOrders } from "@/utils/getOrderProducts";
-import { DeleteConfirmModal } from "@/components/Orders/DeleteConfirmModal";
+import { createProductDeleteHandlers } from "@/utils/productDeleteHandlers";
+import { DeleteConfirmModal } from "@/components/Shared";
 import { ProductListRow } from "./ProductListRow";
 import { ProductsHeader } from "./ProductsHeader";
 import { ProductsSkeleton } from "./ProductsSkeleton";
@@ -39,6 +38,13 @@ export const ProductsView = () => {
 
   const [selectedType, setSelectedType] = useState(ALL);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+
+  const { handleDeleteRequest, handleDeleteCancel, handleDeleteConfirm } =
+    createProductDeleteHandlers(
+      { pendingDeleteId, setPendingDeleteId },
+      dispatch,
+      products,
+    );
 
   const typeOptions = useMemo(
     () => [ALL, ...Array.from(new Set(products.map(getProductType)))],
@@ -71,33 +77,6 @@ export const ProductsView = () => {
     },
     [router],
   );
-
-  const handleDeleteRequest = useCallback((productId: string) => {
-    setPendingDeleteId(productId);
-  }, []);
-
-  const handleDeleteCancel = useCallback(() => {
-    setPendingDeleteId(null);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(async () => {
-    if (!pendingDeleteId) return;
-
-    const product = products.find((p) => p.id === pendingDeleteId);
-    setPendingDeleteId(null);
-
-    if (!product?.orderItemId) {
-      console.error("Product or orderItemId not found");
-      return;
-    }
-
-    try {
-      await deleteOrderItem(product.orderId, product.orderItemId);
-      dispatch(deleteProductGlobal(pendingDeleteId));
-    } catch (error) {
-      console.error("Failed to delete product", error);
-    }
-  }, [dispatch, pendingDeleteId, products]);
 
   return (
     <div className={styles["products"]}>

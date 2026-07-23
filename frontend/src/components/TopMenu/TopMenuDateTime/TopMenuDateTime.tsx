@@ -25,11 +25,21 @@ export const TopMenuDateTime = () => {
           {formatHeaderDate(now, locale)}
         </time>
 
-        {activeSessions !== null && (
-          <span className={styles["top-menu-date-time__sessions"]} aria-label={`Активных сессий: ${activeSessions}`}>
-            {activeSessions}
+        <span
+          className={styles["top-menu-date-time__sessions-wrap"]}
+          aria-label={
+            activeSessions !== null
+              ? `${t("common.activeSessionsAria")}: ${activeSessions}`
+              : t("common.activeSessionsAria")
+          }
+        >
+          <span className={styles["top-menu-date-time__sessions-label"]}>
+            {t("common.activeSessions")}
           </span>
-        )}
+          <span className={styles["top-menu-date-time__sessions"]} aria-hidden="true">
+            {activeSessions ?? "…"}
+          </span>
+        </span>
 
         <span className={styles["top-menu-date-time__clock"]} aria-hidden="true">
           <Clock3 className={styles["top-menu-date-time__clock-icon"]} size={16} strokeWidth={1.9} />

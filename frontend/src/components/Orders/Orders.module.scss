@@ -86,8 +86,9 @@
   transition: flex 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.orders__list--with-panel {
-    flex: 0 0 auto;
+    flex: 0 0 380px;
     max-width: 380px;
+    min-width: 280px;
   }
 
   > li {

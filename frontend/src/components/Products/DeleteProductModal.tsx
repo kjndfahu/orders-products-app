@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/contexts/I18nContext";
 import type { OrderProduct } from "@/types/order";
-import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { DeleteConfirmModal } from "../Shared/DeleteConfirmModal";
 
 type DeleteProductModalProps = {
   product: OrderProduct;

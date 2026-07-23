@@ -20,7 +20,6 @@ export const getAllProductsFromOrders = (orders: Order[]): ProductListItem[] =>
         warrantyFrom: product.warrantyFrom,
         warrantyTo: product.warrantyTo,
         condition: product.condition ?? "new",
-        // No per-product price yet, so this falls back to the order's price.
         priceUsd: product.priceUsd ?? order.amountUsd,
         priceUah: product.priceUah ?? order.amountUah,
         groupName: product.groupName,

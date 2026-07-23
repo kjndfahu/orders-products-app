@@ -1,4 +1,4 @@
-INSERT INTO `products` (`name`, `description`, `price`, `stock_quantity`, `category`, `sku`, `warranty_from`, `warranty_to`, `product_condition`, `is_active`) VALUES
+INSERT IGNORE INTO `products` (`name`, `description`, `price`, `stock_quantity`, `category`, `sku`, `warranty_from`, `warranty_to`, `product_condition`, `is_active`) VALUES
 ('Laptop Pro 15"', 'High-performance laptop with 16GB RAM and 512GB SSD', 1299.99, 50, 'Electronics', 'LAPTOP-001', '2024-01-10', '2026-01-10', 'new', TRUE),
 ('Wireless Mouse', 'Ergonomic wireless mouse with USB receiver', 29.99, 150, 'Electronics', 'MOUSE-001', '2024-02-01', '2025-02-01', 'new', TRUE),
 ('Mechanical Keyboard', 'RGB mechanical keyboard with Cherry MX switches', 89.99, 75, 'Electronics', 'KEYBOARD-001', '2024-03-05', '2026-03-05', 'new', TRUE),
@@ -15,7 +15,7 @@ INSERT INTO `products` (`name`, `description`, `price`, `stock_quantity`, `categ
 ('Laptop Bag', 'Premium laptop bag with multiple compartments', 79.99, 65, 'Accessories', 'BAG-001', '2024-01-25', '2026-01-25', 'new', TRUE),
 ('Screen Protector', 'Tempered glass screen protector for laptops', 24.99, 180, 'Accessories', 'SCREEN-001', '2024-02-20', '2026-02-20', 'new', TRUE);
 
-INSERT INTO `orders` (`order_number`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `total_amount`, `status`, `payment_status`, `payment_method`) VALUES
+INSERT IGNORE INTO `orders` (`order_number`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `total_amount`, `status`, `payment_status`, `payment_method`) VALUES
 ('ORD-2026-001', 'John Smith', 'john.smith@example.com', '+1-555-0101', '123 Main St, New York, NY 10001, USA', '123 Main St, New York, NY 10001, USA', 1419.97, 'delivered', 'paid', 'credit_card'),
 ('ORD-2026-002', 'Maria Garcia', 'maria.garcia@example.com', '+1-555-0102', '456 Oak Ave, Los Angeles, CA 90001, USA', '456 Oak Ave, Los Angeles, CA 90001, USA', 159.97, 'shipped', 'paid', 'paypal'),
 ('ORD-2026-003', 'David Chen', 'david.chen@example.com', '+1-555-0103', '789 Pine Rd, San Francisco, CA 94102, USA', '789 Pine Rd, San Francisco, CA 94102, USA', 579.97, 'processing', 'paid', 'credit_card'),

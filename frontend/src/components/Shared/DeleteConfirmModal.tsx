@@ -4,7 +4,8 @@ import { Monitor, Trash2, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useI18n } from "@/contexts/I18nContext";
 import type { OrderProduct } from "@/types/order";
-import styles from "./Orders.module.scss";
+import { lockScroll } from "@/utils/scrollLock";
+import styles from "../Orders/Orders.module.scss";
 
 type DeleteConfirmModalProps = {
   title: string;
@@ -27,6 +28,8 @@ export const DeleteConfirmModal = ({
   useEffect(() => {
     cancelButtonRef.current?.focus();
 
+    const unlockScroll = lockScroll();
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onCancel();
@@ -34,7 +37,11 @@ export const DeleteConfirmModal = ({
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      unlockScroll();
+    };
   }, [onCancel]);
 
   return (

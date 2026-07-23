@@ -11,7 +11,7 @@
     "loading": "Loading orders...",
     "error": "Loading error",
     "empty": "No orders found",
-    "deleteConfirm": "Delete order",
+    "deleteConfirm": "Are you sure you want to delete this order?",
     "deleteSuccess": "Order successfully deleted",
     "deleteError": "Error deleting order",
     "addProduct": "Add product",
@@ -48,6 +48,8 @@
     "search": "Search",
     "filter": "Filter",
     "today": "Today",
-    "productType": "Product type"
+    "productType": "Product type",
+    "activeSessions": "Sessions",
+    "activeSessionsAria": "Active sessions now"
   }
 }

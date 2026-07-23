@@ -30,9 +30,9 @@ export const ProductListRow = ({
 
   const orderDate = formatOrderDate(product.orderDate, locale);
 
-  const status = STATUS_VARIANTS[
-    statusLabel.toLowerCase() as keyof typeof STATUS_VARIANTS
-  ];
+  const statusKey = product.status;
+  
+  const status = STATUS_VARIANTS[statusKey as keyof typeof STATUS_VARIANTS];
 
   const statusStyle = status
     ? {
@@ -94,7 +94,7 @@ export const ProductListRow = ({
       </div>
 
       <span className={styles["products__group-name"]}>
-        {product.groupName ?? "Без типа"}
+        {product.groupName ?? t("products.noType")}
       </span>
 
       <span className={styles["products__owner-name"]}>

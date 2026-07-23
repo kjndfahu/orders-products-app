@@ -1,16 +1,14 @@
 "use client";
 
-import { Menu, Settings, X } from "lucide-react";
+import { Settings, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useI18n } from "@/contexts/I18nContext";
 import { useMobileMenu } from "@/contexts/MobileMenuContext";
 import { NAV_ITEMS } from "@/config";
+import { DISABLED_NAV_KEYS } from "./NavigationMenu.constants";
+import type { NavKey } from "./NavigationMenu.types";
 import styles from "./NavigationMenu.module.scss";
-
-const DISABLED_NAV_KEYS = new Set(["groups", "users", "settings"]);
-
-type NavKey = "orders" | "groups" | "products" | "users" | "settings";
 
 export const NavigationMenu = () => {
   const pathname = usePathname() ?? "";

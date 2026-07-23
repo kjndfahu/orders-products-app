@@ -36,12 +36,12 @@ export type ProductListItem = {
 };
 
 export const STATUS_VARIANTS = {
-  свободен: {
+  free: {
     dot: "dotFree",
     text: "statusFree",
   },
 
-  "в ремонте": {
+  repair: {
     dot: "dotRepair",
     text: "statusRepair",
 
@@ -50,8 +50,8 @@ export const STATUS_VARIANTS = {
 } as const;
 
 export const CONDITION_LABEL = {
-  new: "новый",
-  used: "Б/У",
+  new: "new",
+  used: "used",
 } as const;
 
 export type { Order };
