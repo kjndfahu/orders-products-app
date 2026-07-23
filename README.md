@@ -100,9 +100,12 @@ orders-products-app/
 ├── backend/          # Express API, Prisma, миграции, seed
 ├── frontend/         # Next.js приложение
 ├── docker-compose.yml
-├── .env              # переменные для Docker (не коммитить секреты в публичный репозиторий)
+├── .env              # переменные для Docker (создать из .env.example)
+├── .env.example      # шаблон переменных окружения
 └── README.md
 ```
+
+**Важно:** `package-lock.json` файлы **закоммичены** в репозиторий для обеспечения воспроизводимости сборки Docker и локальной разработки.
 
 ## Требования
 
@@ -127,6 +130,8 @@ docker compose up --build -d
 # Frontend: http://localhost:3001
 # Backend API: http://localhost:5000/api/v1
 ```
+
+> **Примечание:** При первом клонировании убедитесь, что `package-lock.json` файлы присутствуют в `backend/` и `frontend/` директориях. Если их нет, запустите `npm install` в каждой директории перед сборкой Docker.
 
 ## Запуск через Docker (рекомендуется)
 
@@ -306,3 +311,44 @@ docker compose exec db mariadb -u root -p
 ## Лицензия
 
 ISC (backend). Frontend — private package.
+
+## Для разработчиков
+
+### Добавление зависимостей
+
+При добавлении новых npm пакетов:
+
+```bash
+# Backend
+cd backend
+npm install <package-name>
+git add package.json package-lock.json
+
+# Frontend
+cd frontend
+npm install <package-name>
+git add package.json package-lock.json
+```
+
+**Важно:** Всегда коммитьте обновлённый `package-lock.json` вместе с `package.json` для обеспечения детерминированных сборок.
+
+### Почему package-lock.json в git?
+
+✅ **Воспроизводимость** — все разработчики и CI/CD получают одинаковые версии зависимостей  
+✅ **Docker** — `npm ci` требует lock-файл и работает быстрее, чем `npm install`  
+✅ **Безопасность** — можно отследить когда и кем были изменены версии пакетов  
+✅ **Отладка** — проще найти причину проблемы, если все используют идентичные версии
+
+### Структура коммитов
+
+При клонировании и первом запуске:
+
+```bash
+git clone <repo-url>
+cd orders-products-app
+cp .env.example .env
+# Отредактируйте .env
+docker compose up --build -d
+```
+
+Backend автоматически выполнит миграции Prisma и загрузит seed-данные при первом запуске.
