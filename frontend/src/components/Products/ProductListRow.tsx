@@ -5,7 +5,7 @@ import { ProductListItem } from "@/config";
 import { STATUS_VARIANTS, CONDITION_LABEL } from "../../config";
 import { formatOrderDate } from "@/utils/formatOrderDate";
 import { formatUsd, formatUah } from "@/utils/formatCurrency";
-import { formatWarrantyRange } from "./formatWarrantyDate";
+import { formatWarrantyRange } from "@/utils/formatWarrantyDate";
 import styles from "./Products.module.scss";
 
 type ProductListRowProps = {
@@ -34,92 +34,92 @@ export const ProductListRow = ({
 
   const statusStyle = status
     ? {
-        dot: styles[status.dot],
-        text: styles[status.text],
+        dot: styles[`products__status-dot--${status.dot.replace('dot', '')}`],
+        text: styles[`products__status--${status.text.replace('status', '')}`],
       }
     : {
-        dot: styles.dotDefault,
-        text: styles.statusDefault,
+        dot: styles["products__status-dot--default"],
+        text: styles["products__status--default"],
       };
 
   return (
-    <li className={styles.row}>
+    <li className={styles["products__row"]}>
       <span
-        className={`${styles.statusDot} ${statusStyle.dot}`}
+        className={`${styles["products__status-dot"]} ${statusStyle.dot}`}
         aria-hidden="true"
       />
 
-      <div className={styles.productImage}>
+      <div className={styles["products__product-image"]}>
         <Monitor size={40} strokeWidth={1.5} />
       </div>
 
-      <div className={styles.productInfo}>
-        <p className={styles.productName}>{product.name}</p>
-        <p className={styles.productSerial}>{product.serialNumber}</p>
+      <div className={styles["products__product-info"]}>
+        <p className={styles["products__product-name"]}>{product.name}</p>
+        <p className={styles["products__product-serial"]}>{product.serialNumber}</p>
       </div>
 
-      <span className={`${styles.status} ${statusStyle.text}`}>
+      <span className={`${styles["products__status"]} ${statusStyle.text}`}>
         {statusLabel}
       </span>
 
-      <div className={styles.warranty}>
+      <div className={styles["products__warranty"]}>
         {from && (
           <span>
             с <b>{from.pretty}</b>{" "}
-            <span className={styles.warrantySecondary}>({from.iso})</span>
+            <span className={styles["products__warranty-secondary"]}>({from.iso})</span>
           </span>
         )}
 
         {to && (
           <span>
             по <b>{to.pretty}</b>{" "}
-            <span className={styles.warrantySecondary}>({to.iso})</span>
+            <span className={styles["products__warranty-secondary"]}>({to.iso})</span>
           </span>
         )}
       </div>
 
-      <span className={styles.condition}>
+      <span className={styles["products__condition"]}>
         {CONDITION_LABEL[product.condition]}
       </span>
 
-      <div className={styles.priceBlock}>
-        <span className={styles.priceUsd}>
+      <div className={styles["products__price-block"]}>
+        <span className={styles["products__price-usd"]}>
           {formatUsd(product.priceUsd)}
         </span>
-        <span className={styles.priceUah}>
+        <span className={styles["products__price-uah"]}>
           {formatUah(product.priceUah)}
         </span>
       </div>
 
-      <span className={styles.groupName}>
+      <span className={styles["products__group-name"]}>
         {product.groupName ?? "Без типа"}
       </span>
 
-      <span className={styles.ownerName}>
+      <span className={styles["products__owner-name"]}>
         {product.ownerName ?? "—"}
       </span>
 
       <button
         type="button"
-        className={styles.orderLink}
+        className={styles["products__order-link"]}
         onClick={() => onOpenOrder(product.orderId)}
       >
         {product.orderTitle}
       </button>
 
-      <div className={styles.orderDateBlock}>
-        <span className={styles.orderDateSecondary}>
+      <div className={styles["products__order-date-block"]}>
+        <span className={styles["products__order-date-secondary"]}>
           {product.orderSecondaryDateLabel ?? orderDate.secondary}
         </span>
 
-        <span className={styles.orderDatePrimary}>
+        <span className={styles["products__order-date-primary"]}>
           {orderDate.primary}
         </span>
       </div>
 
       <button
         type="button"
-        className={styles.deleteButton}
+        className={styles["products__delete-button"]}
         aria-label={`Удалить продукт: ${product.name}`}
         onClick={() => onDelete(product.id)}
       >

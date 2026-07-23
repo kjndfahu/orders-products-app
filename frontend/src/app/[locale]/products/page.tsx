@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { ProductsSkeleton } from "@/components/Products/ProductsSkeleton";
 
 const ProductsView = dynamic(
   () =>
@@ -6,7 +7,7 @@ const ProductsView = dynamic(
       (mod) => mod.ProductsView,
     ),
   {
-    loading: () => <p>Загрузка...</p>,
+    loading: () => <ProductsSkeleton />,
   },
 );
 

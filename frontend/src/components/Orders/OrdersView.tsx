@@ -17,6 +17,7 @@ import { DeleteOrderModal } from "./DeleteOrderModal";
 import { OrderCard } from "./OrderCard";
 import { OrderDetailPanel } from "./OrderDetailPanel";
 import { OrdersHeader } from "./OrdersHeader";
+import { OrdersSkeleton } from "./OrdersSkeleton";
 import styles from "./Orders.module.scss";
 
 export const OrdersView = () => {
@@ -98,17 +99,15 @@ export const OrdersView = () => {
     <div className={styles.orders}>
       <OrdersHeader count={orders.length} />
 
-      {status === "loading" && (
-        <p className={styles.emptyState}>{t('orders.loading')}</p>
-      )}
+      {status === "loading" && <OrdersSkeleton />}
 
       {status === "failed" && error && (
-        <p className={styles.emptyState}>{t('orders.error')}: {error}</p>
+        <p className={styles["orders__empty-state"]}>{t('orders.error')}: {error}</p>
       )}
 
-      <div className={styles.layout}>
+      <div className={styles["orders__layout"]}>
         <ul
-          className={`${styles.list} ${selectedOrder ? styles.listWithPanel : ""}`}
+          className={`${styles["orders__list"]} ${selectedOrder ? styles["orders__list--with-panel"] : ""}`}
           aria-label="Список приходов"
         >
           {orders.map((order) => (

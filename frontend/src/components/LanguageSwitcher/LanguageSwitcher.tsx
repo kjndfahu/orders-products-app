@@ -19,17 +19,17 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <div className={styles.languageSwitcher}>
+    <div className={styles["language-switcher"]}>
       <Languages size={18} strokeWidth={1.5} />
       <button
-        className={`${styles.button} ${locale === 'ru' ? styles.active : ''}`}
+        className={`${styles["language-switcher__button"]} ${locale === 'ru' ? styles["language-switcher__button--active"] : ''}`}
         onClick={() => switchLocale('ru')}
         aria-label="Switch to Russian"
       >
         RU
       </button>
       <button
-        className={`${styles.button} ${locale === 'en' ? styles.active : ''}`}
+        className={`${styles["language-switcher__button"]} ${locale === 'en' ? styles["language-switcher__button--active"] : ''}`}
         onClick={() => switchLocale('en')}
         aria-label="Switch to English"
       >

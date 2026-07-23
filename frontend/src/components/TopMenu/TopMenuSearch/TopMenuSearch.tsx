@@ -27,19 +27,19 @@ export const TopMenuSearch = ({
 
   return (
     <form
-      className={[styles.form, className].filter(Boolean).join(" ")}
+      className={[styles["top-menu-search__form"], className].filter(Boolean).join(" ")}
       role="search"
       aria-label="Поиск"
       onSubmit={handleSubmit}
     >
-      <label htmlFor={inputId} className={styles.visuallyHidden}>
+      <label htmlFor={inputId} className={styles["top-menu-search__visually-hidden"]}>
         {placeholder}
       </label>
       <input
         id={inputId}
         type="search"
         name="q"
-        className={styles.input}
+        className={styles["top-menu-search__input"]}
         placeholder={placeholder}
         autoComplete="off"
       />

@@ -25,17 +25,17 @@ export const OrderCard = ({
   const { secondary, primary } = formatOrderDate(order.date);
 
   return (
-    <div className={styles.cardRow}>
+    <div className={styles["orders__card-row"]}>
       <article
-        className={`${styles.card} ${isActive ? styles.cardActive : ""} ${isCompact ? styles.cardCompact : ""}`}
+        className={`${styles["orders__card"]} ${isActive ? styles["orders__card--active"] : ""} ${isCompact ? styles["orders__card--compact"] : ""}`}
         aria-current={isActive ? "true" : undefined}
       >
-        <h3 className={styles.cardTitle}>{order.title}</h3>
+        {!isCompact && <h3 className={styles["orders__card-title"]}>{order.id}</h3>}
 
-        <div className={styles.productMenu}>
+        <div className={styles["orders__product-menu"]}>
           <button
             type="button"
-            className={styles.menuButton}
+            className={styles["orders__menu-button"]}
             aria-label={`Открыть детали прихода: ${order.title}`}
             aria-expanded={isActive}
             onClick={() => onOpenDetails(order.id)}
@@ -43,29 +43,29 @@ export const OrderCard = ({
             <Menu size={16} strokeWidth={1.75}/>
           </button>
 
-          <div className={styles.productCount}>
-            <span className={styles.productCountValue}>{order.productCount}</span>
-            <span className={styles.productCountLabel}>
+          <div className={styles["orders__product-count"]}>
+            <span className={styles["orders__product-count-value"]}>{order.productCount}</span>
+            <span className={styles["orders__product-count-label"]}>
               {pluralizeProducts(order.productCount)}
             </span>
           </div>
         </div>
 
-        <div className={styles.dateBlock}>
-          <span className={styles.dateSecondary}>
+        <div className={styles["orders__date-block"]}>
+          <span className={styles["orders__date-secondary"]}>
             {order.secondaryDateLabel ?? secondary}
           </span>
-          <span className={styles.datePrimary}>{primary}</span>
+          <span className={styles["orders__date-primary"]}>{primary}</span>
         </div>
 
-        <div className={styles.priceBlock}>
-          <span className={styles.priceUsd}>{formatUsd(order.amountUsd)}</span>
-          <span className={styles.priceUah}>{formatUah(order.amountUah)}</span>
+        <div className={styles["orders__price-block"]}>
+          <span className={styles["orders__price-usd"]}>{formatUsd(order.amountUsd)}</span>
+          <span className={styles["orders__price-uah"]}>{formatUah(order.amountUah)}</span>
         </div>
 
         <button
           type="button"
-          className={styles.deleteButton}
+          className={styles["orders__delete-button"]}
           aria-label={`Удалить приход: ${order.title}`}
           onClick={() => onDelete(order.id)}
         >
@@ -74,7 +74,7 @@ export const OrderCard = ({
 
         {isCompact && (
           <div
-            className={`${styles.cardArrow} ${isActive ? "" : styles.cardArrowSpacer}`}
+            className={`${styles["orders__card-arrow"]} ${isActive ? "" : styles["orders__card-arrow--spacer"]}`}
             aria-hidden="true"
           >
             {isActive && <ChevronRight size={16} strokeWidth={1.75} />}

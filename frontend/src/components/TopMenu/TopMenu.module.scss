@@ -1,14 +1,12 @@
-@use "../../styles/variables" as *;
-
-.header {
+.top-menu {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: $color-surface;
-  box-shadow: 0 2px 8px rgba($color-shadow, 0.08);
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(var(--color-shadow), 0.08);
 }
 
-.inner {
+.top-menu__inner {
   display: flex;
   align-items: center;
   gap: 32px;
@@ -16,7 +14,7 @@
   padding: 12px 32px;
 }
 
-.brand {
+.top-menu__brand {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -24,52 +22,56 @@
   text-decoration: none;
 }
 
-.brandIcon {
+.top-menu__brand-icon {
   flex-shrink: 0;
-  color: $color-primary;
+  color: var(--color-primary);
 }
 
-.brandText {
-  color: $color-primary;
+.top-menu__brand-text {
+  color: var(--color-primary);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
 }
 
-.searchSlot {
+.top-menu__search-slot {
   flex: 0 1 420px;
   min-width: 0;
 }
 
-.dateTimeSlot {
+.top-menu__datetime-slot {
   margin-left: auto;
   flex-shrink: 0;
 }
 
-.languageSlot {
+.top-menu__language-slot {
+  flex-shrink: 0;
+}
+
+.top-menu__theme-slot {
   flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-  .inner {
+  .top-menu__inner {
     flex-wrap: wrap;
     gap: 16px;
     padding: 12px 20px;
   }
 
-  .searchSlot {
+  .top-menu__search-slot {
     order: 3;
     flex: 1 1 100%;
   }
 
-  .dateTimeSlot {
+  .top-menu__datetime-slot {
     margin-left: 0;
   }
 }
 
 @media (max-width: 480px) {
-  .brandText {
+  .top-menu__brand-text {
     font-size: 16px;
   }
 }

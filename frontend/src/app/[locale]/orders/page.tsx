@@ -1,9 +1,10 @@
 import dynamic from "next/dynamic";
+import { OrdersSkeleton } from "@/components/Orders/OrdersSkeleton";
 
 const OrdersView = dynamic(
   () => import("@/components/Orders").then((mod) => mod.OrdersView),
   {
-    loading: () => <p>Загрузка...</p>,
+    loading: () => <OrdersSkeleton />,
   },
 );
 

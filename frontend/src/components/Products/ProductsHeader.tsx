@@ -21,18 +21,18 @@ export const ProductsHeader = ({
   const { t } = useI18n();
 
   return (
-    <div className={styles.header}>
+    <div className={styles["products__header"]}>
       <PageTitle
         title={t('products.title')}
         count={count}
-        className={styles.title}
+        className={styles["products__title"]}
       />
 
-      <label className={styles.filter}>
-        <span className={styles.filterLabel}>Тип продукта:</span>
-        <span className={styles.filterSelectWrap}>
+      <label className={styles["products__filter"]}>
+        <span className={styles["products__filter-label"]}>Тип продукта:</span>
+        <span className={styles["products__filter-select-wrap"]}>
           <select
-            className={styles.filterSelect}
+            className={styles["products__filter-select"]}
             value={selectedType}
             onChange={(event) => onTypeChange(event.target.value)}
           >

@@ -11,27 +11,27 @@ type OrderProductRowProps = {
 };
 
 export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => (
-  <li className={styles.productRow}>
-    <div className={styles.productInfoMain}>
-      <span className={styles.statusDot} aria-hidden="true" />
+  <li className={styles["orders__product-row"]}>
+    <div className={styles["orders__product-info-main"]}>
+      <span className={styles["orders__status-dot"]} aria-hidden="true" />
 
-      <div className={styles.productImage}>
+      <div className={styles["orders__product-image"]}>
         <Monitor size={40} strokeWidth={1.5} />
       </div>
 
-      <div className={styles.productInfo}>
-        <p className={styles.productName}>{product.name}</p>
-        <p className={styles.productSerial}>{product.serialNumber}</p>
+      <div className={styles["orders__product-info"]}>
+        <p className={styles["orders__product-name"]}>{product.name}</p>
+        <p className={styles["orders__product-serial"]}>{product.serialNumber}</p>
       </div>
     </div>
 
-    <span className={styles.productStatus}>
+    <span className={styles["orders__product-status"]}>
       {PRODUCT_STATUS_LABELS[product.status]}
     </span>
 
     <button
       type="button"
-      className={styles.productDelete}
+      className={styles["orders__product-delete"]}
       aria-label={`Удалить ${product.name}`}
       onClick={() => onDelete?.(product.id)}
     >

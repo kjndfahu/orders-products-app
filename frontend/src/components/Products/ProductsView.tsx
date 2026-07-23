@@ -13,9 +13,10 @@ import {
   useAppSelector,
 } from "@/store";
 import { deleteOrderItem } from "@/services/ordersApi";
-import { getAllProductsFromOrders } from "./getOrderProducts";
+import { getAllProductsFromOrders } from "@/utils/getOrderProducts";
 import { ProductListRow } from "./ProductListRow";
 import { ProductsHeader } from "./ProductsHeader";
+import { ProductsSkeleton } from "./ProductsSkeleton";
 import styles from "./Products.module.scss";
 import {ALL, NO_TYPE} from "../../config"
 
@@ -78,7 +79,7 @@ export const ProductsView = () => {
   );
 
   return (
-    <div className={styles.products}>
+    <div className={styles["products"]}>
       <ProductsHeader
         count={products.length}
         typeOptions={typeOptions}
@@ -86,8 +87,8 @@ export const ProductsView = () => {
         onTypeChange={setSelectedType}
       />
 
-      <div className={styles.tableScroll}>
-        <ul className={styles.list} role="list" aria-label="Список продуктов">
+      <div className={styles["products__table-scroll"]}>
+        <ul className={styles["products__list"]} role="list" aria-label="Список продуктов">
           {filteredProducts.map((product) => (
             <ProductListRow
               key={product.id}
@@ -99,12 +100,10 @@ export const ProductsView = () => {
           ))}
         </ul>
 
-        {status === "loading" && (
-          <p className={styles.emptyState}>{t('products.loading')}</p>
-        )}
+        {status === "loading" && <ProductsSkeleton />}
 
         {status !== "loading" && filteredProducts.length === 0 && (
-          <p className={styles.emptyState}>{t('products.empty')}</p>
+          <p className={styles["products__empty-state"]}>{t('products.empty')}</p>
         )}
       </div>
     </div>

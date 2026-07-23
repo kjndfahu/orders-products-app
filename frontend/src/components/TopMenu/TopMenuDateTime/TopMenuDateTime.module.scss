@@ -1,26 +1,24 @@
-@use "../../../styles/variables" as *;
-
-.root {
+.top-menu-date-time {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 2px;
 }
 
-.label {
-  color: rgba($color-foreground, 0.45);
+.top-menu-date-time__label {
+  color: rgba(var(--foreground), 0.45);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.2;
 }
 
-.row {
+.top-menu-date-time__row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.sessions {
+.top-menu-date-time__sessions {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -28,35 +26,35 @@
   height: 18px;
   padding: 0 6px;
   border-radius: 999px;
-  background: rgba($color-primary, 0.12);
-  color: $color-primary;
+  background: rgba(var(--color-primary), 0.12);
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
 }
 
-.date,
-.time {
-  color: $color-foreground;
+.top-menu-date-time__date,
+.top-menu-date-time__time {
+  color: var(--foreground);
   font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
 }
 
-.clock {
+.top-menu-date-time__clock {
   display: inline-flex;
   align-items: center;
-  color: $color-primary;
+  color: var(--color-primary);
 }
 
-.clockIcon {
+.top-menu-date-time__clock-icon {
   display: block;
 }
 
 @media (max-width: 480px) {
-  .date,
-  .time {
+  .top-menu-date-time__date,
+  .top-menu-date-time__time {
     font-size: 13px;
   }
 }

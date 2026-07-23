@@ -4,6 +4,33 @@
 :root {
   --background: #{$color-background};
   --foreground: #{$color-foreground};
+  --surface: #{$color-surface};
+  --border: #{$color-border};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-muted: #{$text-muted};
+  --surface-muted: #{$surface-muted};
+  --surface-hover: #{$surface-hover};
+  --color-primary: #{$color-primary};
+  --color-shadow: #{$color-shadow};
+  --nav-text-muted: #8a96a3;
+  --nav-text-active: #3d4852;
+}
+
+[data-theme="dark"] {
+  --background: #{$color-background-dark};
+  --foreground: #{$color-foreground-dark};
+  --surface: #{$color-surface-dark};
+  --border: #{$color-border-dark};
+  --text-primary: #{$text-primary-dark};
+  --text-secondary: #{$text-secondary-dark};
+  --text-muted: #{$text-muted-dark};
+  --surface-muted: #{$surface-muted-dark};
+  --surface-hover: #{$surface-hover-dark};
+  --color-primary: #{$color-primary-dark};
+  --color-shadow: #{$color-shadow};
+  --nav-text-muted: #a1a1aa;
+  --nav-text-active: #f5f5f5;
 }
 
 @theme inline {

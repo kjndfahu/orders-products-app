@@ -7,6 +7,7 @@ import { TopMenu } from "@/components/TopMenu";
 import { NavigationMenu } from "@/components/NavigationMenu";
 import { StoreProvider } from "@/providers/StoreProvider";
 import { I18nProvider } from "@/contexts/I18nContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const locales = ['ru', 'en'] as const;
 type Locale = (typeof locales)[number];
@@ -43,23 +44,42 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const THEME_STORAGE_KEY = 'theme';
+                const stored = localStorage.getItem(THEME_STORAGE_KEY);
+                const theme = stored === 'light' || stored === 'dark' 
+                  ? stored 
+                  : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
-        <I18nProvider initialLocale={locale as Locale}>
-          <StoreProvider>
-            <div className={styles.shell}>
-              <TopMenu />
+        <ThemeProvider>
+          <I18nProvider initialLocale={locale as Locale}>
+            <StoreProvider>
+              <div className={styles.shell}>
+                <TopMenu />
 
-              <div className={styles.body}>
-                <NavigationMenu />
+                <div className={styles.body}>
+                  <NavigationMenu />
 
-                <main className={styles.main} id="main-content">
-                  <div className={styles.content}>{children}</div>
-                </main>
+                  <main className={styles.main} id="main-content">
+                    <div className={styles.content}>{children}</div>
+                  </main>
+                </div>
               </div>
-            </div>
-          </StoreProvider>
-        </I18nProvider>
+            </StoreProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

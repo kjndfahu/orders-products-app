@@ -20,15 +20,15 @@ export const NavigationMenu = () => {
   };
 
   return (
-    <aside className={styles.navigationMenu} aria-label="Основная навигация">
-      <div className={styles.profile}>
-        <div className={styles.avatarWrapper}>
-          <div className={styles.avatar} aria-hidden="true">
-            <span className={styles.avatarInitials}>АП</span>
+    <aside className={styles["navigation-menu"]} aria-label="Основная навигация">
+      <div className={styles["navigation-menu__profile"]}>
+        <div className={styles["navigation-menu__avatar-wrapper"]}>
+          <div className={styles["navigation-menu__avatar"]} aria-hidden="true">
+            <span className={styles["navigation-menu__avatar-initials"]}>АП</span>
           </div>
           <button
             type="button"
-            className={styles.profileSettings}
+            className={styles["navigation-menu__profile-settings"]}
             aria-label="Настройки профиля"
             aria-disabled="true"
           >
@@ -37,8 +37,8 @@ export const NavigationMenu = () => {
         </div>
       </div>
 
-      <nav className={styles.nav}>
-        <ul className={styles.navList} role="list">
+      <nav className={styles["navigation-menu__nav"]}>
+        <ul className={styles["navigation-menu__nav-list"]} role="list">
           {NAV_ITEMS.map(({ href, key }) => {
             const navKey = key as NavKey;
             const isDisabled = DISABLED_NAV_KEYS.has(navKey);
@@ -47,10 +47,10 @@ export const NavigationMenu = () => {
               pathname === localizedHref || pathname.startsWith(`${localizedHref}/`);
 
             return (
-              <li key={href} className={styles.navItem}>
+              <li key={href} className={styles["navigation-menu__nav-item"]}>
                 {isDisabled ? (
                   <span
-                    className={`${styles.navLink} ${styles.navLinkDisabled}`}
+                    className={`${styles["navigation-menu__nav-link"]} ${styles["navigation-menu__nav-link--disabled"]}`}
                     aria-disabled="true"
                   >
                     {t(`nav.${navKey}`)}
@@ -58,7 +58,7 @@ export const NavigationMenu = () => {
                 ) : (
                   <Link
                     href={localizedHref}
-                    className={`${styles.navLink} ${isActive ? styles.navLinkActive : ""}`}
+                    className={`${styles["navigation-menu__nav-link"]} ${isActive ? styles["navigation-menu__nav-link--active"] : ""}`}
                     aria-current={isActive ? "page" : undefined}
                   >
                     {t(`nav.${navKey}`)}

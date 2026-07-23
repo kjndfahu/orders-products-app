@@ -36,9 +36,9 @@ export const DeleteConfirmModal = ({
   }, [onCancel]);
 
   return (
-    <div className={styles.modalOverlay} onClick={onCancel}>
+    <div className={styles["orders__modal-overlay"]} onClick={onCancel}>
       <div
-        className={styles.modal}
+        className={styles["orders__modal"]}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -46,31 +46,31 @@ export const DeleteConfirmModal = ({
       >
         <button
           type="button"
-          className={styles.modalCloseButton}
+          className={styles["orders__modal-close-button"]}
           aria-label="Закрыть"
           onClick={onCancel}
         >
           <X size={16} strokeWidth={1.75} />
         </button>
 
-        <div className={styles.modalBody}>
-          <h2 id={titleId} className={styles.modalTitle}>
+        <div className={styles["orders__modal-body"]}>
+          <h2 id={titleId} className={styles["orders__modal-title"]}>
             {title}
           </h2>
 
           {products.length > 0 && (
-            <ul className={styles.modalProductList}>
+            <ul className={styles["orders__modal-product-list"]}>
               {products.map((product) => (
-                <li key={product.id} className={styles.modalProductPreview}>
-                  <span className={styles.statusDot} aria-hidden="true" />
+                <li key={product.id} className={styles["orders__modal-product-preview"]}>
+                  <span className={styles["orders__status-dot"]} aria-hidden="true" />
 
-                  <div className={styles.productImage}>
+                  <div className={styles["orders__product-image"]}>
                     <Monitor size={40} strokeWidth={1.5} />
                   </div>
 
-                  <div className={styles.productInfo}>
-                    <p className={styles.productName}>{product.name}</p>
-                    <p className={styles.productSerial}>
+                  <div className={styles["orders__product-info"]}>
+                    <p className={styles["orders__product-name"]}>{product.name}</p>
+                    <p className={styles["orders__product-serial"]}>
                       {product.serialNumber}
                     </p>
                   </div>
@@ -80,11 +80,11 @@ export const DeleteConfirmModal = ({
           )}
         </div>
 
-        <div className={styles.modalFooter}>
+        <div className={styles["orders__modal-footer"]}>
           <button
             ref={cancelButtonRef}
             type="button"
-            className={styles.modalCancelButton}
+            className={styles["orders__modal-cancel-button"]}
             onClick={onCancel}
           >
             ОТМЕНИТЬ
@@ -92,7 +92,7 @@ export const DeleteConfirmModal = ({
 
           <button
             type="button"
-            className={styles.modalDeleteButton}
+            className={styles["orders__modal-delete-button"]}
             onClick={onConfirm}
           >
             <Trash2 size={16} strokeWidth={1.75} />

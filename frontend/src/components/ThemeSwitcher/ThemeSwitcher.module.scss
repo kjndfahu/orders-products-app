@@ -1,0 +1,42 @@
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(var(--foreground), 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--foreground), 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(var(--foreground), 0.1);
+  }
+}
+
+.theme-switcher__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(var(--foreground), 0.1);
+  }
+
+  &.theme-switcher__button--active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}

@@ -54,11 +54,11 @@ export const OrderDetailPanel = ({
 
   return (
     <>
-      <div className={styles.panelWrapper}>
+      <div className={styles["orders__panel-wrapper"]}>
         <button
           ref={closeButtonRef}
           type="button"
-          className={styles.closeButton}
+          className={styles["orders__panel-close-button"]}
           aria-label="Закрыть панель"
           onClick={onClose}
         >
@@ -66,28 +66,28 @@ export const OrderDetailPanel = ({
         </button>
 
         <aside
-          className={styles.panel}
+          className={styles["orders__panel"]}
           role="dialog"
           aria-modal="true"
           aria-labelledby={`order-panel-title-${order.id}`}
         >
-          <header className={styles.panelHeader}>
+          <header className={styles["orders__panel-header"]}>
             <h2
               id={`order-panel-title-${order.id}`}
-              className={styles.panelTitle}
+              className={styles["orders__panel-title"]}
             >
               {order.title}
             </h2>
 
-            <button type="button" className={styles.addProductButton}>
-              <span className={styles.addProductIcon}>
+            <button type="button" className={styles["orders__add-product-button"]}>
+              <span className={styles["orders__add-product-icon"]}>
                 <Plus size={14} strokeWidth={2} />
               </span>
               Добавить продукт
             </button>
           </header>
 
-          <ul className={styles.productList} role="list">
+          <ul className={styles["orders__product-list"]} role="list">
             {order.products.map((product) => (
               <OrderProductRow
                 key={product.id}
