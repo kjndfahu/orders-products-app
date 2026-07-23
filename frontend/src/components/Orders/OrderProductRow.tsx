@@ -2,7 +2,7 @@
 
 import { Monitor, Trash2 } from "lucide-react";
 import type { OrderProduct } from "@/types/order";
-import { PRODUCT_STATUS_LABELS } from "@/types/order";
+import { useI18n } from "@/contexts/I18nContext";
 import styles from "./Orders.module.scss";
 
 type OrderProductRowProps = {
@@ -10,7 +10,10 @@ type OrderProductRowProps = {
   onDelete?: (productId: string) => void;
 };
 
-export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => (
+export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => {
+  const { t } = useI18n();
+
+  return (
   <li className={styles["orders__product-row"]}>
     <div className={styles["orders__product-info-main"]}>
       <span className={styles["orders__status-dot"]} aria-hidden="true" />
@@ -26,7 +29,7 @@ export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => 
     </div>
 
     <span className={styles["orders__product-status"]}>
-      {PRODUCT_STATUS_LABELS[product.status]}
+      {t(`products.status.${product.status}`)}
     </span>
 
     <button
@@ -38,4 +41,5 @@ export const OrderProductRow = ({ product, onDelete }: OrderProductRowProps) => 
       <Trash2 size={16} strokeWidth={1.75} />
     </button>
   </li>
-);
+  );
+};

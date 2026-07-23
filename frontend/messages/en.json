@@ -13,7 +13,9 @@
     "empty": "No orders found",
     "deleteConfirm": "Delete order",
     "deleteSuccess": "Order successfully deleted",
-    "deleteError": "Error deleting order"
+    "deleteError": "Error deleting order",
+    "addProduct": "Add product",
+    "productInOrders": "Product in orders"
   },
   "products": {
     "title": "Products",
@@ -33,7 +35,8 @@
       "sold": "Sold",
       "repair": "In repair"
     },
-    "delete": "Delete product"
+    "delete": "Delete product",
+    "deleteConfirmMessage": "Are you sure you want to delete this item?"
   },
   "common": {
     "delete": "Delete",
@@ -43,6 +46,8 @@
     "edit": "Edit",
     "close": "Close",
     "search": "Search",
-    "filter": "Filter"
+    "filter": "Filter",
+    "today": "Today",
+    "productType": "Product type"
   }
 }

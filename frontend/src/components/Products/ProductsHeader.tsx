@@ -29,7 +29,7 @@ export const ProductsHeader = ({
       />
 
       <label className={styles["products__filter"]}>
-        <span className={styles["products__filter-label"]}>Тип продукта:</span>
+        <span className={styles["products__filter-label"]}>{t('common.productType')}:</span>
         <span className={styles["products__filter-select-wrap"]}>
           <select
             className={styles["products__filter-select"]}

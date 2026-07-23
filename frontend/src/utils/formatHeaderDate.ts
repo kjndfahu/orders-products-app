@@ -1,5 +1,5 @@
-export const formatHeaderDate = (date: Date): string =>
-  new Intl.DateTimeFormat(undefined, {
+export const formatHeaderDate = (date: Date, locale: string = 'ru'): string =>
+  new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "short",
     year: "numeric",

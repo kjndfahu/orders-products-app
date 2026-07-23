@@ -4,23 +4,25 @@ import { Clock3 } from "lucide-react";
 import { useActiveSessions, useCurrentDateTime } from "@/hooks";
 import { formatHeaderDate } from "@/utils/formatHeaderDate";
 import { formatHeaderTime } from "@/utils/formatHeaderTime";
+import { useI18n } from "@/contexts/I18nContext";
 import styles from "./TopMenuDateTime.module.scss";
 
 export const TopMenuDateTime = () => {
   const now = useCurrentDateTime();
   const activeSessions = useActiveSessions();
+  const { t, locale } = useI18n();
   const isoDateTime = now.toISOString();
 
   return (
     <div className={styles["top-menu-date-time"]} aria-live="polite">
-      <span className={styles["top-menu-date-time__label"]}>Сегодня</span>
+      <span className={styles["top-menu-date-time__label"]}>{t('common.today')}</span>
       <div className={styles["top-menu-date-time__row"]}>
         <time
           className={styles["top-menu-date-time__date"]}
           dateTime={isoDateTime}
           suppressHydrationWarning
         >
-          {formatHeaderDate(now)}
+          {formatHeaderDate(now, locale)}
         </time>
 
         {activeSessions !== null && (
@@ -37,7 +39,7 @@ export const TopMenuDateTime = () => {
           dateTime={isoDateTime}
           suppressHydrationWarning
         >
-          {formatHeaderTime(now)}
+          {formatHeaderTime(now, locale)}
         </time>
       </div>
     </div>

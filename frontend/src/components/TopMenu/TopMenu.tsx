@@ -3,7 +3,6 @@
 import { Menu, Shield } from "lucide-react";
 import Link from "next/link";
 import { TopMenuDateTime } from "./TopMenuDateTime";
-import { TopMenuSearch } from "./TopMenuSearch";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useI18n } from "@/contexts/I18nContext";
@@ -32,10 +31,6 @@ export const TopMenu = ({ onMobileMenuToggle }: TopMenuProps) => {
           <Shield className={styles["top-menu__brand-icon"]} size={22} strokeWidth={1.9} />
           <span className={styles["top-menu__brand-text"]}>INVENTORY</span>
         </Link>
-
-        <div className={styles["top-menu__search-slot"]}>
-          <TopMenuSearch />
-        </div>
 
         <div className={styles["top-menu__datetime-slot"]}>
           <TopMenuDateTime />

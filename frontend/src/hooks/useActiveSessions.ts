@@ -6,7 +6,6 @@ import { io, type Socket } from "socket.io-client";
 const SOCKET_PATH = "/api/socket";
 
 let socketSingleton: Socket | null = null;
-let hasInitialized = false;
 
 export const useActiveSessions = (): number | null => {
   const [activeSessions, setActiveSessions] = useState<number | null>(null);
@@ -19,34 +18,25 @@ export const useActiveSessions = (): number | null => {
       }
     };
 
-    const connect = async () => {
-      try {
-        if (!hasInitialized) {
-          // Initializes the Socket.io server in Next API route.
-          await fetch(SOCKET_PATH);
-          hasInitialized = true;
-        }
-
-        if (!socketSingleton) {
-          socketSingleton = io({
-            path: SOCKET_PATH,
-          });
-        }
-
-        socketSingleton.on("activeSessions", handleActiveSessions);
-        socketSingleton.on("connect", () => {
-          socketSingleton?.emit("requestActiveSessions");
+    try {
+      if (!socketSingleton) {
+        socketSingleton = io({
+          path: SOCKET_PATH,
+          transports: ["websocket"],
         });
-
-        if (socketSingleton.connected) {
-          socketSingleton.emit("requestActiveSessions");
-        }
-      } catch {
-        // If socket server is unavailable, keep counter hidden.
       }
-    };
 
-    void connect();
+      socketSingleton.on("activeSessions", handleActiveSessions);
+      socketSingleton.on("connect", () => {
+        socketSingleton?.emit("requestActiveSessions");
+      });
+
+      if (socketSingleton.connected) {
+        socketSingleton.emit("requestActiveSessions");
+      }
+    } catch {
+      // If socket server is unavailable, keep counter hidden.
+    }
 
     return () => {
       isMounted = false;

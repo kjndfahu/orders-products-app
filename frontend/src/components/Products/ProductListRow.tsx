@@ -2,10 +2,11 @@
 
 import { Monitor, Trash2 } from "lucide-react";
 import { ProductListItem } from "@/config";
-import { STATUS_VARIANTS, CONDITION_LABEL } from "../../config";
+import { STATUS_VARIANTS } from "../../config";
 import { formatOrderDate } from "@/utils/formatOrderDate";
 import { formatUsd, formatUah } from "@/utils/formatCurrency";
 import { formatWarrantyRange } from "@/utils/formatWarrantyDate";
+import { useI18n } from "@/contexts/I18nContext";
 import styles from "./Products.module.scss";
 
 type ProductListRowProps = {
@@ -21,12 +22,13 @@ export const ProductListRow = ({
   onOpenOrder,
   onDelete,
 }: ProductListRowProps) => {
+  const { t, locale } = useI18n();
   const { from, to } = formatWarrantyRange(
     product.warrantyFrom,
     product.warrantyTo,
   );
 
-  const orderDate = formatOrderDate(product.orderDate);
+  const orderDate = formatOrderDate(product.orderDate, locale);
 
   const status = STATUS_VARIANTS[
     statusLabel.toLowerCase() as keyof typeof STATUS_VARIANTS
@@ -79,7 +81,7 @@ export const ProductListRow = ({
       </div>
 
       <span className={styles["products__condition"]}>
-        {CONDITION_LABEL[product.condition]}
+        {t(`products.condition.${product.condition}`)}
       </span>
 
       <div className={styles["products__price-block"]}>

@@ -5,6 +5,7 @@ import type { Order } from "@/types/order";
 import { formatOrderDate } from "@/utils/formatOrderDate";
 import { formatUsd, formatUah } from "@/utils/formatCurrency";
 import { pluralizeProducts } from "@/utils/pluralizeProducts";
+import { useI18n } from "@/contexts/I18nContext";
 import styles from "./Orders.module.scss";
 
 type OrderCardProps = {
@@ -22,7 +23,8 @@ export const OrderCard = ({
   onOpenDetails,
   onDelete,
 }: OrderCardProps) => {
-  const { secondary, primary } = formatOrderDate(order.date);
+  const { locale } = useI18n();
+  const { secondary, primary } = formatOrderDate(order.date, locale);
 
   return (
     <div className={styles["orders__card-row"]}>
@@ -46,7 +48,7 @@ export const OrderCard = ({
           <div className={styles["orders__product-count"]}>
             <span className={styles["orders__product-count-value"]}>{order.productCount}</span>
             <span className={styles["orders__product-count-label"]}>
-              {pluralizeProducts(order.productCount)}
+              {pluralizeProducts(order.productCount, locale)}
             </span>
           </div>
         </div>

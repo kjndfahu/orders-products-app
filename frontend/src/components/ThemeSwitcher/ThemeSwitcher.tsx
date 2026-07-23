@@ -15,7 +15,7 @@ export const ThemeSwitcher = () => {
         onClick={toggleTheme}
         aria-label="Switch to light theme"
       >
-        <Sun color="#6faf45" size={18} strokeWidth={1.5} />
+        <Sun color="#f39c12" size={18} strokeWidth={1.5} />
       </button>
       <button
         type="button"
@@ -23,7 +23,7 @@ export const ThemeSwitcher = () => {
         onClick={toggleTheme}
         aria-label="Switch to dark theme"
       >
-        <Moon color="#6faf45" size={18} strokeWidth={1.5} />
+        <Moon color="#3498db" size={18} strokeWidth={1.5} />
       </button>
     </div>
   );

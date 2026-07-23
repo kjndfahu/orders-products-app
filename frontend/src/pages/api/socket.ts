@@ -24,6 +24,7 @@ export default function handler(_req: NextApiRequest, res: WithSocketServer) {
     const io = new SocketIOServer(server as unknown as HttpServer, {
       path: "/api/socket",
       addTrailingSlash: false,
+      transports: ["websocket"],
     });
 
     server.io = io;
@@ -44,5 +45,5 @@ export default function handler(_req: NextApiRequest, res: WithSocketServer) {
     });
   }
 
-  res.end();
+  res.status(200).end();
 }

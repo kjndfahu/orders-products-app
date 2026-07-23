@@ -2,6 +2,7 @@
 
 import { Monitor, Trash2, X } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 import type { OrderProduct } from "@/types/order";
 import styles from "./Orders.module.scss";
 
@@ -20,6 +21,7 @@ export const DeleteConfirmModal = ({
   onCancel,
   onConfirm,
 }: DeleteConfirmModalProps) => {
+  const { t } = useI18n();
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export const DeleteConfirmModal = ({
             className={styles["orders__modal-cancel-button"]}
             onClick={onCancel}
           >
-            ОТМЕНИТЬ
+            {t('common.cancel').toUpperCase()}
           </button>
 
           <button
@@ -96,7 +98,7 @@ export const DeleteConfirmModal = ({
             onClick={onConfirm}
           >
             <Trash2 size={16} strokeWidth={1.75} />
-            УДАЛИТЬ
+            {t('common.delete').toUpperCase()}
           </button>
         </div>
       </div>

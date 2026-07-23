@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/contexts/I18nContext";
-import { PRODUCT_STATUS_LABELS } from "@/types/order";
 import {
   deleteProductGlobal,
   fetchOrders,
@@ -14,11 +13,12 @@ import {
 } from "@/store";
 import { deleteOrderItem } from "@/services/ordersApi";
 import { getAllProductsFromOrders } from "@/utils/getOrderProducts";
+import { DeleteConfirmModal } from "@/components/Orders/DeleteConfirmModal";
 import { ProductListRow } from "./ProductListRow";
 import { ProductsHeader } from "./ProductsHeader";
 import { ProductsSkeleton } from "./ProductsSkeleton";
 import styles from "./Products.module.scss";
-import {ALL, NO_TYPE} from "../../config"
+import { ALL, NO_TYPE } from "../../config";
 
 const getProductType = (product: { groupName?: string }) => product.groupName ?? NO_TYPE;
 
@@ -38,6 +38,7 @@ export const ProductsView = () => {
   const products = useMemo(() => getAllProductsFromOrders(orders), [orders]);
 
   const [selectedType, setSelectedType] = useState(ALL);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const typeOptions = useMemo(
     () => [ALL, ...Array.from(new Set(products.map(getProductType)))],
@@ -52,6 +53,18 @@ export const ProductsView = () => {
     [products, selectedType],
   );
 
+  const pendingDeleteProduct = useMemo(() => {
+    if (!pendingDeleteId) return null;
+    const p = products.find((item) => item.id === pendingDeleteId);
+    if (!p) return null;
+    return {
+      id: p.id,
+      name: p.name,
+      serialNumber: p.serialNumber,
+      status: p.status,
+    };
+  }, [pendingDeleteId, products]);
+
   const handleOpenOrder = useCallback(
     (orderId: string) => {
       router.push(`/orders?order=${orderId}`);
@@ -59,24 +72,32 @@ export const ProductsView = () => {
     [router],
   );
 
-  const handleDelete = useCallback(
-    async (productId: string) => {
-      const product = products.find((p) => p.id === productId);
+  const handleDeleteRequest = useCallback((productId: string) => {
+    setPendingDeleteId(productId);
+  }, []);
 
-      if (!product?.orderItemId) {
-        console.error("Product or orderItemId not found");
-        return;
-      }
+  const handleDeleteCancel = useCallback(() => {
+    setPendingDeleteId(null);
+  }, []);
 
-      try {
-        await deleteOrderItem(product.orderId, product.orderItemId);
-        dispatch(deleteProductGlobal(productId));
-      } catch (error) {
-        console.error("Failed to delete product", error);
-      }
-    },
-    [dispatch, products],
-  );
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!pendingDeleteId) return;
+
+    const product = products.find((p) => p.id === pendingDeleteId);
+    setPendingDeleteId(null);
+
+    if (!product?.orderItemId) {
+      console.error("Product or orderItemId not found");
+      return;
+    }
+
+    try {
+      await deleteOrderItem(product.orderId, product.orderItemId);
+      dispatch(deleteProductGlobal(pendingDeleteId));
+    } catch (error) {
+      console.error("Failed to delete product", error);
+    }
+  }, [dispatch, pendingDeleteId, products]);
 
   return (
     <div className={styles["products"]}>
@@ -93,9 +114,9 @@ export const ProductsView = () => {
             <ProductListRow
               key={product.id}
               product={product}
-              statusLabel={PRODUCT_STATUS_LABELS[product.status]}
+              statusLabel={t(`products.status.${product.status}`)}
               onOpenOrder={handleOpenOrder}
-              onDelete={handleDelete}
+              onDelete={handleDeleteRequest}
             />
           ))}
         </ul>
@@ -103,9 +124,19 @@ export const ProductsView = () => {
         {status === "loading" && <ProductsSkeleton />}
 
         {status !== "loading" && filteredProducts.length === 0 && (
-          <p className={styles["products__empty-state"]}>{t('products.empty')}</p>
+          <p className={styles["products__empty-state"]}>{t("products.empty")}</p>
         )}
       </div>
+
+      {pendingDeleteProduct && (
+        <DeleteConfirmModal
+          title={t("products.deleteConfirmMessage")}
+          titleId={`delete-product-title-${pendingDeleteProduct.id}`}
+          products={[pendingDeleteProduct]}
+          onCancel={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
     </div>
   );
 };

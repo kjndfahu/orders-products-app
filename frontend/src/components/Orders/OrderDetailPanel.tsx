@@ -2,6 +2,7 @@
 
 import { Plus, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 import type { Order } from "@/types/order";
 import { DeleteProductModal } from "./DeleteProductModal";
 import { OrderProductRow } from "./OrderProductRow";
@@ -18,6 +19,7 @@ export const OrderDetailPanel = ({
   onClose,
   onDeleteProduct,
 }: OrderDetailPanelProps) => {
+  const { t } = useI18n();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
 
@@ -52,16 +54,23 @@ export const OrderDetailPanel = ({
     setDeleteProductId(null);
   };
 
+  const handleWrapperClick = () => {
+    // Only close on mobile/tablet (when panel is modal overlay)
+    if (window.innerWidth <= 1024) {
+      onClose();
+    }
+  };
+
   return (
     <>
       <div
         className={styles["orders__panel-wrapper"]}
-        onClick={onClose}
+        onClick={handleWrapperClick}
       >
         <aside
           className={styles["orders__panel"]}
           role="dialog"
-          aria-modal="true"
+          aria-modal="false"
           aria-labelledby={`order-panel-title-${order.id}`}
           onClick={(event) => event.stopPropagation()}
         >
@@ -87,7 +96,7 @@ export const OrderDetailPanel = ({
               <span className={styles["orders__add-product-icon"]}>
                 <Plus size={14} strokeWidth={2} />
               </span>
-              Добавить продукт
+              {t('orders.addProduct')}
             </button>
           </header>
 
