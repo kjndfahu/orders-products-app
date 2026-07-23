@@ -10,7 +10,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "mariadb -h $DB_HOST -u $DB_USER -p$DB_PASSWORD --ssl=0 $DB_NAME < database/seed.sql",
+    "prisma:seed": "mariadb -h $DB_HOST -P $DB_PORT -u $DB_USER -p$DB_PASSWORD --ssl-verify-server-cert=0 $DB_NAME < database/seed.sql",
     "db:setup": "npm run prisma:migrate && npm run prisma:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
