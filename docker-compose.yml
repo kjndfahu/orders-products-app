@@ -37,12 +37,6 @@ services:
         condition: service_healthy
     ports:
       - "5000:5000"
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma migrate deploy && npm run prisma:seed || true && npm run start"
-      ]
 
   frontend:
     build:
