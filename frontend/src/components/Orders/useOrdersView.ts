@@ -8,7 +8,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/store";
-import { deleteOrderItem } from "@/services/ordersApi";
+import { deleteOrderItem, deleteOrder as deleteOrderApi } from "@/services/ordersApi";
 
 export const useOrdersView = () => {
   const dispatch = useAppDispatch();
@@ -43,36 +43,46 @@ export const useOrdersView = () => {
     setDeleteOrderId(null);
   }, []);
 
-  const handleDeleteConfirm = useCallback(() => {
-    setDeleteOrderId((currentDeleteOrderId) => {
-      if (!currentDeleteOrderId) {
-        return null;
-      }
+  const handleDeleteConfirm = useCallback(async () => {
+    const currentDeleteOrderId = deleteOrderId;
+    
+    if (!currentDeleteOrderId) {
+      return;
+    }
 
-      dispatch(deleteOrderAction(currentDeleteOrderId));
-      setSelectedOrderId((current) =>
-        current === currentDeleteOrderId ? null : current,
-      );
+    // Сначала обновляем стейт (оптимистичное обновление)
+    dispatch(deleteOrderAction(currentDeleteOrderId));
+    setSelectedOrderId((current) =>
+      current === currentDeleteOrderId ? null : current,
+    );
+    setDeleteOrderId(null);
 
-      return null;
-    });
-  }, [dispatch]);
+    // Потом отправляем запрос на бекенд
+    try {
+      await deleteOrderApi(currentDeleteOrderId);
+    } catch (error) {
+      console.error("Failed to delete order", error);
+      // Можно добавить откат изменений, если нужно
+    }
+  }, [dispatch, deleteOrderId]);
 
   const handleDeleteProduct = useCallback(
     async (orderId: string, productId: string) => {
       const order = orders.find((item) => item.id === orderId);
       const product = order?.products.find((item) => item.id === productId);
 
+      // Сначала обновляем стейт (оптимистичное обновление)
+      dispatch(deleteProduct({ orderId, productId }));
+
+      // Потом отправляем запрос на бекенд
       try {
         if (product?.orderItemId) {
           await deleteOrderItem(orderId, product.orderItemId);
         }
       } catch (err) {
         console.error("Failed to delete order item", err);
-        return;
+        // Можно добавить откат изменений, если нужно
       }
-
-      dispatch(deleteProduct({ orderId, productId }));
     },
     [dispatch, orders],
   );

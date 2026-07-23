@@ -294,4 +294,58 @@ export class OrderRepository extends BaseRepository {
       return { found: true, deleted: true };
     });
   }
+
+  async deleteOrder(orderNumber: string): Promise<{
+    found: boolean;
+    deleted: boolean;
+  }> {
+    return this.prisma.$transaction(async (tx) => {
+      const numericId = Number(orderNumber);
+      const whereClause: any = {};
+      
+      if (!isNaN(numericId)) {
+        whereClause.OR = [
+          { id: numericId },
+          { order_number: orderNumber },
+        ];
+      } else {
+        whereClause.order_number = orderNumber;
+      }
+      
+      const order = await tx.order.findFirst({
+        where: whereClause,
+        include: {
+          order_items: true,
+        },
+      });
+
+      if (!order) {
+        return { found: false, deleted: false };
+      }
+
+      // Возвращаем товары на склад
+      for (const item of order.order_items) {
+        await tx.product.update({
+          where: { id: item.product_id },
+          data: {
+            stock_quantity: {
+              increment: item.quantity,
+            },
+          },
+        });
+      }
+
+      // Удаляем все элементы заказа
+      await tx.orderItem.deleteMany({
+        where: { order_id: order.id },
+      });
+
+      // Удаляем сам заказ
+      await tx.order.delete({
+        where: { id: order.id },
+      });
+
+      return { found: true, deleted: true };
+    });
+  }
 }

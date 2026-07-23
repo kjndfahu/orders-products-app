@@ -39,4 +39,8 @@ export class OrderService {
   async deleteOrderItem(orderNumber: string, itemId: number) {
     return this.repository.deleteOrderItem(orderNumber, itemId);
   }
+
+  async deleteOrder(orderNumber: string) {
+    return this.repository.deleteOrder(orderNumber);
+  }
 }

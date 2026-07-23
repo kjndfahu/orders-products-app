@@ -71,6 +71,12 @@ export const deleteOrderItem = async (
   });
 };
 
+export const deleteOrder = async (orderNumber: string): Promise<void> => {
+  await apiFetch<void>(`/orders/${orderNumber}`, {
+    method: "DELETE",
+  });
+};
+
 export const fetchOrders = async (): Promise<Order[]> => {
   const response = await apiFetch<unknown>("/orders");
   const parsed = backendOrdersResponseSchema.safeParse(response);

@@ -25,6 +25,8 @@ export const createProductDeleteHandlers = (
     if (!state.pendingDeleteId) return;
 
     const product = products.find((p) => p.id === state.pendingDeleteId);
+    const productIdToDelete = state.pendingDeleteId;
+    
     state.setPendingDeleteId(null);
 
     if (!product?.orderItemId) {
@@ -32,11 +34,15 @@ export const createProductDeleteHandlers = (
       return;
     }
 
+    // Сначала обновляем стейт (оптимистичное обновление)
+    dispatch(deleteProductGlobal(productIdToDelete));
+
+    // Потом отправляем запрос на бекенд
     try {
       await deleteOrderItem(product.orderId, Number(product.orderItemId));
-      dispatch(deleteProductGlobal(state.pendingDeleteId));
     } catch (error) {
       console.error("Failed to delete product", error);
+      // Можно добавить откат изменений, если нужно
     }
   };
 

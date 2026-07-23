@@ -171,3 +171,32 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     handleError(error, res, "updating order");
   }
 };
+
+export const deleteOrder = async (req: Request, res: Response) => {
+  try {
+    const { orderNumber } = req.params;
+
+    if (!orderNumber) {
+      return res.status(400).json({
+        success: false,
+        message: "Order number is required",
+      });
+    }
+
+    const result = await orderService.deleteOrder(orderNumber);
+
+    if (!result.found) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Order deleted successfully",
+    });
+  } catch (error) {
+    handleError(error, res, "deleting order");
+  }
+};
