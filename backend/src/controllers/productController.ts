@@ -1,20 +1,13 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
-import {
-  createProduct as createProductService,
-  deleteProduct as deleteProductService,
-  getCategories as getCategoriesService,
-  getProductById as getProductByIdService,
-  getProducts,
-  updateProduct as updateProductService,
-} from "../services/productService";
+import { productService } from "../config/services";
 import { handleError, handleValidationError } from "../utils/errorHandler";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { category, is_active, search } = req.query;
 
-    const products = await getProducts({
+    const products = await productService.getProducts({
       category: category ? String(category) : undefined,
       is_active:
         is_active !== undefined ? String(is_active) === "true" : undefined,
@@ -34,7 +27,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const product = await getProductByIdService(id);
+    const product = await productService.getProductById(id);
 
     if (!product) {
       return res.status(404).json({
@@ -75,7 +68,7 @@ export const createProduct = async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await createProductService(parseResult.data);
+    const result = await productService.createProduct(parseResult.data);
 
     res.status(201).json({
       success: true,
@@ -101,7 +94,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await updateProductService(id, parseResult.data);
+    const result = await productService.updateProduct(id, parseResult.data);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -121,7 +114,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const getCategories = async (_req: Request, res: Response) => {
   try {
-    const categories = await getCategoriesService();
+    const categories = await productService.getCategories();
 
     res.json({
       success: true,
@@ -136,7 +129,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const result = await deleteProductService(id);
+    const result = await productService.deleteProduct(id);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({

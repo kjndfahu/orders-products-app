@@ -54,23 +54,27 @@ export const OrderDetailPanel = ({
 
   return (
     <>
-      <div className={styles["orders__panel-wrapper"]}>
-        <button
-          ref={closeButtonRef}
-          type="button"
-          className={styles["orders__panel-close-button"]}
-          aria-label="Закрыть панель"
-          onClick={onClose}
-        >
-          <X size={16} strokeWidth={1.75} />
-        </button>
-
+      <div
+        className={styles["orders__panel-wrapper"]}
+        onClick={onClose}
+      >
         <aside
           className={styles["orders__panel"]}
           role="dialog"
           aria-modal="true"
           aria-labelledby={`order-panel-title-${order.id}`}
+          onClick={(event) => event.stopPropagation()}
         >
+          <button
+            ref={closeButtonRef}
+            type="button"
+            className={styles["orders__panel-close-button"]}
+            aria-label="Закрыть панель"
+            onClick={onClose}
+          >
+            <X size={16} strokeWidth={1.75} />
+          </button>
+
           <header className={styles["orders__panel-header"]}>
             <h2
               id={`order-panel-title-${order.id}`}

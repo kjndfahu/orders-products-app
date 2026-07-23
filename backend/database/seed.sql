@@ -1,5 +1,3 @@
-USE `orders_products_db`;
-
 INSERT INTO `products` (`name`, `description`, `price`, `stock_quantity`, `category`, `sku`, `warranty_from`, `warranty_to`, `product_condition`, `is_active`) VALUES
 ('Laptop Pro 15"', 'High-performance laptop with 16GB RAM and 512GB SSD', 1299.99, 50, 'Electronics', 'LAPTOP-001', '2024-01-10', '2026-01-10', 'new', TRUE),
 ('Wireless Mouse', 'Ergonomic wireless mouse with USB receiver', 29.99, 150, 'Electronics', 'MOUSE-001', '2024-02-01', '2025-02-01', 'new', TRUE),

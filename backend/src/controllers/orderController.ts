@@ -1,21 +1,15 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
-import {
-  createOrder as createOrderService,
-  deleteOrderItem as deleteOrderItemService,
-  getOrderByIdOrNumber,
-  getOrders,
-  updateOrderStatus as updateOrderStatusService,
-} from "../services/orderService";
+import { orderService } from "../config/services";
 import { handleError, handleValidationError } from "../utils/errorHandler";
 
 export const getAllOrders = async (req: Request, res: Response) => {
   try {
     const { status, payment_status, customer_email } = req.query;
 
-    const orders = await getOrders({
-      status: status ? String(status) : undefined,
-      payment_status: payment_status ? String(payment_status) : undefined,
+    const orders = await orderService.getOrders({
+      status: status ? String(status) as any : undefined,
+      payment_status: payment_status ? String(payment_status) as any : undefined,
       customer_email: customer_email ? String(customer_email) : undefined,
     });
 
@@ -33,7 +27,7 @@ export const getOrderById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const order = await getOrderByIdOrNumber(id);
+    const order = await orderService.getOrderByIdOrNumber(id);
 
     if (!order) {
       return res.status(404).json({
@@ -80,7 +74,7 @@ export const createOrder = async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await createOrderService(parseResult.data);
+    const result = await orderService.createOrder(parseResult.data);
 
     res.status(201).json({
       success: true,
@@ -108,7 +102,7 @@ export const deleteOrderItem = async (req: Request, res: Response) => {
 
     const { orderNumber, itemId } = parseResult.data;
 
-    const result = await deleteOrderItemService(orderNumber, itemId);
+    const result = await orderService.deleteOrderItem(orderNumber, itemId);
 
     if (!result.found) {
       return res.status(404).json({
@@ -156,7 +150,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await updateOrderStatusService(
+    const result = await orderService.updateOrderStatus(
       req.params.id,
       status,
       payment_status,

@@ -3,11 +3,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "../globals.scss";
 import styles from "../layout.module.scss";
-import { TopMenu } from "@/components/TopMenu";
+import { TopMenuWithToggle } from "@/components/TopMenu/TopMenuWithToggle";
 import { NavigationMenu } from "@/components/NavigationMenu";
 import { StoreProvider } from "@/providers/StoreProvider";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { MobileMenuProvider } from "@/contexts/MobileMenuContext";
 
 const locales = ['ru', 'en'] as const;
 type Locale = (typeof locales)[number];
@@ -65,19 +66,21 @@ export default async function LocaleLayout({
       <body>
         <ThemeProvider>
           <I18nProvider initialLocale={locale as Locale}>
-            <StoreProvider>
-              <div className={styles.shell}>
-                <TopMenu />
+            <MobileMenuProvider>
+              <StoreProvider>
+                <div className={styles.shell}>
+                  <TopMenuWithToggle />
 
-                <div className={styles.body}>
-                  <NavigationMenu />
+                  <div className={styles.body}>
+                    <NavigationMenu />
 
-                  <main className={styles.main} id="main-content">
-                    <div className={styles.content}>{children}</div>
-                  </main>
+                    <main className={styles.main} id="main-content">
+                      <div className={styles.content}>{children}</div>
+                    </main>
+                  </div>
                 </div>
-              </div>
-            </StoreProvider>
+              </StoreProvider>
+            </MobileMenuProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

@@ -7,10 +7,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
-    "db:init": "node dist/scripts/initDatabase.js",
-    "db:seed": "node dist/scripts/seedDatabase.js",
-    "db:seed-if-empty": "node dist/scripts/seedIfEmpty.js",
-    "db:setup": "npm run build && npm run db:init && npm run db:seed-if-empty",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "mariadb -h $DB_HOST -u $DB_USER -p$DB_PASSWORD --ssl=0 $DB_NAME < database/seed.sql",
+    "db:setup": "npm run prisma:migrate && npm run prisma:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,16 +19,16 @@
     "products",
     "api",
     "express",
-    "mysql"
+    "prisma"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql2": "^3.6.5",
-    "dotenv": "^16.3.1",
-    "cors": "^2.8.5",
+    "@prisma/client": "^5.22.0",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "morgan": "^1.10.0",
     "zod": "^3.24.1"
   },
@@ -37,6 +38,7 @@
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.11",
+    "prisma": "^5.22.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }

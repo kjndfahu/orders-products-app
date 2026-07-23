@@ -14,10 +14,21 @@
   min-height: 0;
 }
 
+@media (max-width: 768px) {
+  .body {
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
 .main {
   flex: 1;
   min-width: 0;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .content {
@@ -27,8 +38,15 @@
   padding: 32px 24px 56px;
 }
 
+@media (max-width: 768px) {
+  .content {
+    padding: 0;
+    margin: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .content {
-    padding: 24px 20px 72px;
+    padding: 0;
   }
 }

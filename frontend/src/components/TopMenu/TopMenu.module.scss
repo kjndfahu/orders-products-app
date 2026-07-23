@@ -53,7 +53,36 @@
   flex-shrink: 0;
 }
 
+.top-menu__burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: var(--surface-muted);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
 @media (max-width: 768px) {
+  .top-menu__burger {
+    display: flex;
+  }
+
   .top-menu__inner {
     flex-wrap: wrap;
     gap: 16px;

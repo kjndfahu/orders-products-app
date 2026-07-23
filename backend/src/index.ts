@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 
-import { testConnection } from "./config/database";
+import { testConnection, disconnectDatabase } from "./config/database";
 import orderRoutes from "./routes/orders";
 import productRoutes from "./routes/products";
 
@@ -75,6 +75,15 @@ app.use(
     });
   },
 );
+
+const gracefulShutdown = async () => {
+  console.log("Shutting down gracefully...");
+  await disconnectDatabase();
+  process.exit(0);
+};
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
 
 app.listen(PORT, async () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

@@ -1,8 +1,7 @@
-version: "3.9"
 
 services:
   mysql:
-    image: mysql:8.0
+    image: mariadb:10.11
     container_name: orders_products_mysql
     restart: unless-stopped
     environment:
@@ -13,7 +12,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpassword"]
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-prootpassword"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -31,6 +30,7 @@ services:
       DB_USER: root
       DB_PASSWORD: rootpassword
       DB_NAME: orders_products_db
+      DATABASE_URL: mysql://root:rootpassword@mysql:3306/orders_products_db
       CORS_ORIGIN: http://localhost:3000,http://localhost:3001
       API_PREFIX: /api/v1
     depends_on:
@@ -38,7 +38,7 @@ services:
         condition: service_healthy
     ports:
       - "5000:5000"
-    command: ["sh", "-c", "npm run db:setup && npm run start"]
+    command: ["sh", "-c", "npx prisma migrate deploy && npm run prisma:seed || true && npm run start"]
 
   frontend:
     build:

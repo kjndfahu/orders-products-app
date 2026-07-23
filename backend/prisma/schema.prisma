@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductCondition {
+  new
+  used
+}
+
+enum OrderStatus {
+  pending
+  processing
+  shipped
+  delivered
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+model Product {
+  id               Int              @id @default(autoincrement())
+  name             String           @db.VarChar(255)
+  description      String?          @db.Text
+  price            Decimal          @db.Decimal(10, 2)
+  stock_quantity   Int              @default(0)
+  category         String?          @db.VarChar(100)
+  image_url        String?          @db.VarChar(500)
+  sku              String?          @unique @db.VarChar(100)
+  warranty_from    DateTime?        @db.Date
+  warranty_to      DateTime?        @db.Date
+  product_condition ProductCondition @default(new)
+  is_active        Boolean          @default(true)
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @default(now()) @updatedAt
+  order_items      OrderItem[]
+
+  @@index([category])
+  @@index([is_active])
+  @@index([sku])
+  @@map("products")
+}
+
+model Order {
+  id               Int           @id @default(autoincrement())
+  order_number     String        @unique @db.VarChar(100)
+  customer_name    String        @db.VarChar(255)
+  customer_email   String        @db.VarChar(255)
+  customer_phone   String?       @db.VarChar(50)
+  shipping_address String        @db.Text
+  billing_address  String?       @db.Text
+  total_amount     Decimal       @db.Decimal(10, 2)
+  status           OrderStatus   @default(pending)
+  payment_status   PaymentStatus @default(pending)
+  payment_method   String?       @db.VarChar(50)
+  notes            String?       @db.Text
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @default(now()) @updatedAt
+  order_items      OrderItem[]
+
+  @@index([status])
+  @@index([customer_email])
+  @@index([created_at(sort: Desc)])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             Int     @id @default(autoincrement())
+  order_id       Int
+  product_id     Int
+  product_name   String  @db.VarChar(255)
+  product_price  Decimal @db.Decimal(10, 2)
+  quantity       Int
+  subtotal       Decimal @db.Decimal(10, 2)
+  created_at     DateTime @default(now())
+  order          Order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product        Product @relation(fields: [product_id], references: [id], onDelete: Restrict)
+
+  @@index([order_id])
+  @@index([product_id])
+  @@map("order_items")
+}
