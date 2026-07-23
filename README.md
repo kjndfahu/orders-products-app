@@ -16,6 +16,73 @@
 | **ORM / БД** | [Prisma](https://www.prisma.io/), MariaDB 10.11 |
 | **Инфраструктура** | Docker Compose |
 
+## Архитектура Backend
+
+Backend построен по **трёхслойной архитектуре** с использованием классов:
+
+### 1. **Repository Layer (Репозитории)**
+- Базовый абстрактный класс `BaseRepository` инкапсулирует работу с Prisma Client
+- `OrderRepository` и `ProductRepository` наследуются от базового класса
+- Отвечают за прямое взаимодействие с БД: SELECT, INSERT, UPDATE, DELETE
+- Строят сложные запросы с фильтрацией, сортировкой и связями (include/select)
+
+### 2. **Service Layer (Сервисы)**
+- `OrderService` и `ProductService` — классы бизнес-логики
+- Используют репозитории для доступа к данным
+- Содержат валидацию, трансформацию данных, дополнительную обработку
+- Могут объединять несколько запросов в одну транзакцию
+
+### 3. **Controller Layer (Контроллеры)**
+- Функции-обработчики Express маршрутов (`getAllOrders`, `createProduct` и т.д.)
+- Извлекают параметры из req (query, params, body)
+- Вызывают методы сервисов
+- Формируют HTTP-ответы (res.json, res.status)
+
+### Почему классы?
+
+✅ **Инкапсуляция** — логика доступа к данным изолирована в классах  
+✅ **Повторное использование** — базовый класс устраняет дублирование кода  
+✅ **Тестируемость** — легко мокировать зависимости (Prisma Client) через DI в конструкторе  
+✅ **Расширяемость** — новый репозиторий = новый класс-наследник  
+✅ **Читаемость** — чёткое разделение ответственности по слоям
+
+## Frontend: Оптимизация и производительность
+
+### Lazy Loading (Dynamic Import)
+Компоненты страниц загружаются асинхронно с помощью `next/dynamic`:
+
+```tsx
+const OrdersView = dynamic(
+  () => import("@/components/Orders").then((mod) => mod.OrdersView),
+  { loading: () => <OrdersSkeleton /> }
+);
+```
+
+**Преимущества:**
+- ⚡ Уменьшение размера первоначального бандла
+- 🚀 Быстрее Time to Interactive (TTI)
+- 📦 Code Splitting — каждая страница загружает только свой код
+- 💀 Skeleton UI — пользователь видит структуру страницы до загрузки данных
+
+### LocalStorage
+Тема приложения (светлая/тёмная) сохраняется в `localStorage`:
+
+```ts
+const THEME_STORAGE_KEY = 'theme';
+localStorage.setItem(THEME_STORAGE_KEY, theme);
+```
+
+**Зачем?**
+- 🎨 Предотвращает "мигание" темы при перезагрузке страницы
+- 🧠 Запоминает выбор пользователя между сессиями
+- ⚡ Синхронный скрипт в `layout.tsx` применяет тему до рендера React (устраняет FOUC)
+
+### Другие оптимизации
+- **SCSS Modules** — локальные стили, нет конфликтов имён классов
+- **Redux Toolkit** — иммутабельные обновления состояния через Immer
+- **React 19** — автоматический батчинг, улучшенные хуки
+- **Socket.IO** — polling → WebSocket upgrade предотвращает ошибки "closed before established"
+
 ## Что реализовано
 
 - **Приходы (orders)** — список карточек, панель деталей, удаление прихода и позиций.
@@ -131,16 +198,85 @@ Frontend в Docker получает `NEXT_PUBLIC_API_URL=http://localhost:5000/a
 
 ## Полезные команды
 
+### Backend
+
 ```bash
-# Backend: Prisma Studio (локально, с настроенным DATABASE_URL)
-cd backend && npm run prisma:studio
+# Разработка с hot-reload
+cd backend && npm run dev
 
-# Frontend: линтер
-cd frontend && npm run lint
+# Production сборка
+cd backend && npm run build
+cd backend && npm start
 
-# Frontend: production-сборка
-cd frontend && npm run build && npm start
+# Prisma
+npm run prisma:generate    # Генерация Prisma Client
+npm run prisma:migrate     # Применение миграций (dev)
+npm run prisma:studio      # GUI для БД (http://localhost:5555)
+npm run prisma:seed        # Загрузка тестовых данных
+npm run db:setup           # Миграции + seed (первый запуск)
 ```
+
+### Frontend
+
+```bash
+# Разработка
+cd frontend && npm run dev
+
+# Production
+npm run build              # Оптимизированная сборка
+npm start                  # Запуск production сервера
+
+# Линтинг
+npm run lint               # ESLint проверка
+```
+
+### Docker
+
+```bash
+# Запуск всех сервисов
+docker compose up -d
+
+# Пересборка после изменений
+docker compose up --build -d
+
+# Остановка
+docker compose down
+
+# Остановка + удаление volumes (БД)
+docker compose down -v
+
+# Логи конкретного сервиса
+docker compose logs backend -f
+docker compose logs frontend -f
+
+# Вход в контейнер
+docker compose exec backend sh
+docker compose exec db mariadb -u root -p
+```
+
+## NPM скрипты
+
+### Backend (`backend/package.json`)
+
+| Команда | Описание |
+|---------|----------|
+| `npm run dev` | Запуск в dev режиме с tsx watch (hot-reload) |
+| `npm run build` | Компиляция TypeScript → JavaScript (dist/) |
+| `npm start` | Запуск скомпилированного приложения |
+| `npm run prisma:generate` | Генерация Prisma Client из schema.prisma |
+| `npm run prisma:migrate` | Создание/применение миграций БД |
+| `npm run prisma:studio` | Открыть Prisma Studio (GUI для БД) |
+| `npm run prisma:seed` | Загрузка seed.sql в БД (требует mariadb CLI) |
+| `npm run db:setup` | Полная настройка БД: миграции + seed |
+
+### Frontend (`frontend/package.json`)
+
+| Команда | Описание |
+|---------|----------|
+| `npm run dev` | Запуск Next.js dev сервера (http://localhost:3000) |
+| `npm run build` | Production сборка (оптимизация, минификация) |
+| `npm start` | Запуск production сервера |
+| `npm run lint` | ESLint проверка кода |
 
 ## Лицензия
 
